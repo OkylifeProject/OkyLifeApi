@@ -6,6 +6,8 @@ import org.apache.commons.validator.routines.EmailValidator
 import org.codehaus.groovy.grails.web.json.JSONArray
 import org.codehaus.groovy.grails.web.json.JSONObject
 
+import java.text.SimpleDateFormat
+
 import static org.springframework.http.HttpStatus.*
 
 @Transactional(readOnly = true)
@@ -44,7 +46,8 @@ class ActivityController {
             return
         }
         def okiBar = new OkiBar()
-        def activityInstance = new Activity(activityType: params.type, creationDate: new Date(), description: params.description, name: params.name, owner: userInstance, okiBar: okiBar)
+        SimpleDateFormat format = new SimpleDateFormat("MM/dd/yy")
+        def activityInstance = new Activity(activityType: params.type, creationDate: format.parse(format.format(new Date())), description: params.description, name: params.name, owner: userInstance, okiBar: okiBar)
         if (!activityInstance.hasErrors()) {
             okiBar.asociatedActivity = activityInstance
             activityInstance.save(flush: true)

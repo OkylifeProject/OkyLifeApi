@@ -1,5 +1,6 @@
 package okylifeapi
 
+import grails.converters.JSON
 import grails.transaction.Transactional
 
 import static org.springframework.http.HttpStatus.*
@@ -20,6 +21,17 @@ class OkiBarController {
 
     def create() {
         respond new OkiBar(params)
+    }
+
+    def getOkiBarByActivity(int activityId) {
+        def activityInstance = Activity.findById(activityId)
+        if (activityInstance) {
+            def okiBar = activityInstance.getOkiBar()
+            render okiBar as JSON
+        } else {
+            response.status = 404
+            render "Activity doesnt exists"
+        }
     }
 
     @Transactional

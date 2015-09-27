@@ -5,6 +5,7 @@ import grails.transaction.Transactional
 import org.apache.commons.validator.routines.EmailValidator
 import org.codehaus.groovy.grails.web.json.JSONObject
 import sun.misc.BASE64Decoder
+import sun.misc.BASE64Encoder
 
 import java.text.SimpleDateFormat
 
@@ -68,9 +69,9 @@ class UserController {
         JSONObject myResponse = new JSONObject();
         myResponse.put("status", "success")
         if (userInstance) {
-            def userPhoto = new File('app-data/profile-pics/' + userInstance.rutaFoto)
-            if (userPhoto.exists()) {
-                myResponse.put("imageHash", userPhoto.bytes.encodeAsSHA1())
+            def userImage = new File('app-data/profile-pics/' + userInstance.imagePath)
+            if (userImage.exists()) {
+                myResponse.put("imageHash", userImage.bytes.encodeAsSHA1())
             } else {
                 myResponse.put("imageHash", "")
             }
@@ -85,11 +86,29 @@ class UserController {
 
     def getImageHash(String email) {
         def userInstance = User.findByEmail(email)
-        def userImage = new File('app-data/profile-pics/' + userInstance.getImagePath())
-        if (userImage != null && userImage != "") {
-            render userImage.bytes.encodeAsSHA1()
-        } else {
-            render ""
+        if (userInstance.imagePath != null && userInstance.imagePath != "") {
+            def userImage = new File('app-data/profile-pics/' + userInstance.imagePath)
+            if (userImage) {
+                render userImage.bytes.encodeAsSHA1()
+            } else {
+                render ""
+            }
+        }
+    }
+
+    def getImage(String email) {
+        def user = User.findByEmail(email)
+        JSONObject response = new JSONObject()
+        if (user.imagePath != null && user.imagePath != "") {
+            def userImage = new File('app-data/profile-pics/' + user.imagePath)
+            if (userImage) {
+                def encode = new BASE64Encoder().encode(userImage.bytes)
+                response.put("imageBytes", encode)
+                render response as JSON
+            } else {
+                render ""
+            }
+
         }
 
     }

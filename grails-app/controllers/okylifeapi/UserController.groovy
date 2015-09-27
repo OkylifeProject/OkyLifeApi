@@ -1,6 +1,9 @@
 package okylifeapi
 
 import grails.transaction.Transactional
+import sun.misc.BASE64Decoder
+
+import java.text.SimpleDateFormat
 
 import static org.springframework.http.HttpStatus.*
 
@@ -20,6 +23,37 @@ class UserController {
 
     def create() {
         respond new User(params)
+    }
+
+    def registerUser() {
+
+        SimpleDateFormat format = new SimpleDateFormat("MM/dd/yy")
+        if (User.findByEmail(params.email)) {
+            render "Email already in use"
+            return
+        }
+        Date birthDate = format.parse(params.birthDate)
+
+        def userInstance = new User(sex: params.sex, firstName: params.firstName, lastName: params.lastName, password: params.password, email: params.email, birthDate: birthDate)
+        userInstance.save(flush: true)
+        if (!userInstance.hasErrors()) {
+            if (params.image) {
+                def newFile = new File('app-data/profile-pics/' + params.email + '-pic.jpg')
+                newFile.getParentFile().mkdirs()
+                newFile.createNewFile()
+                newFile.bytes = new BASE64Decoder().decodeBuffer(params.image)
+                userInstance.imagePath = newFile.getName()
+                userInstance.save(flush: true)
+            }
+        }
+
+        if (userInstance.hasErrors()) {
+            render "There are several data errors; please verify and re-send the information\n" + userInstance.errors.getAllErrors().collect {
+                it.defaultMessage
+            }
+        } else {
+            render "Success"
+        }
     }
 
     @Transactional

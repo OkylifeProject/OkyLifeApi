@@ -2,6 +2,8 @@ package okylifeapi
 
 import grails.transaction.Transactional
 
+import java.text.SimpleDateFormat
+
 import static org.springframework.http.HttpStatus.*
 
 @Transactional(readOnly = true)
@@ -20,6 +22,10 @@ class ActivityController {
 
     def create() {
         respond new Activity(params)
+    }
+
+    def createActivity() {
+        SimpleDateFormat format = new SimpleDateFormat("MM/dd/yy")
     }
 
     @Transactional

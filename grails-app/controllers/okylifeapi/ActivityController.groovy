@@ -26,6 +26,20 @@ class ActivityController {
 
     def createActivity() {
         SimpleDateFormat format = new SimpleDateFormat("MM/dd/yy")
+        if (Activity.findByName(params.name)) {
+            render "Activity name already in use"
+            return
+        }
+        Date creationDate = format.parse(params.creationDate)
+        def activityInstance = new Activity(activityType: params.type, creationDate: creationDate, description: params.description, name: params.name)
+        if (!activityInstance.hasErrors()) {
+            activityInstance.save(flush: true)
+            render "Success"
+        } else if (activityInstance.hasErrors()) {
+            render "here are several data errors; please verify and re-send the information\n" + activityInstance.errors.getAllErrors().collect() {
+                it.defaultMessage
+            }
+        }
     }
 
     @Transactional

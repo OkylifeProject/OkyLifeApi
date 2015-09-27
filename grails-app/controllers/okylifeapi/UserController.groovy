@@ -59,11 +59,11 @@ class UserController {
         }
     }
 
-    def loginUser() {
+    def loginUser(String email, String password) {
         EmailValidator emailValidator = EmailValidator.getInstance();
         def userInstance
-        if (emailValidator.isValid(params.email)) {
-            userInstance = User.findByEmailAndPassword(params.email, params.password)
+        if (emailValidator.isValid(email)) {
+            userInstance = User.findByEmailAndPassword(email, password)
         }
         JSONObject myResponse = new JSONObject();
         myResponse.put("status", "success")
@@ -81,6 +81,17 @@ class UserController {
         } else {
             render "Incorrect email or password. Please try again"
         }
+    }
+
+    def getImageHash(String email) {
+        def userInstance = User.findByEmail(email)
+        def userImage = new File('app-data/profile-pics/' + userInstance.getImagePath())
+        if (userImage != null && userImage != "") {
+            render userImage.bytes.encodeAsSHA1()
+        } else {
+            render ""
+        }
+
     }
 
     @Transactional

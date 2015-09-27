@@ -10,6 +10,7 @@ class Activity {
     static belongsTo = [owner: User]
     static hasOne = [okiBar: OkiBar]
 
+
     static constraints = {
         creationDate nullable: false, validator: { val ->
             Date currentDate = new Date()

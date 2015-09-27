@@ -6,8 +6,6 @@ import org.apache.commons.validator.routines.EmailValidator
 import org.codehaus.groovy.grails.web.json.JSONArray
 import org.codehaus.groovy.grails.web.json.JSONObject
 
-import java.text.SimpleDateFormat
-
 import static org.springframework.http.HttpStatus.*
 
 @Transactional(readOnly = true)
@@ -28,16 +26,29 @@ class ActivityController {
         respond new Activity(params)
     }
 
-    def createActivity() {
-        SimpleDateFormat format = new SimpleDateFormat("MM/dd/yy")
+    def createActivity(String email) {
+        EmailValidator emailValidator = EmailValidator.getInstance()
+        if (!emailValidator.isValid(email)) {
+            response.status = 404
+            render "Invalid Email"
+            return
+        }
+        def userInstance = User.findByEmail(email)
+        if (!userInstance) {
+            response.status = 404
+            render "User doenst exists"
+            return
+        }
         if (Activity.findByName(params.name)) {
             render "Activity name already in use"
             return
         }
-        Date creationDate = format.parse(params.creationDate)
-        def activityInstance = new Activity(activityType: params.type, creationDate: creationDate, description: params.description, name: params.name)
+        def okiBar = new OkiBar()
+        def activityInstance = new Activity(activityType: params.type, creationDate: new Date(), description: params.description, name: params.name, owner: userInstance, okiBar: okiBar)
         if (!activityInstance.hasErrors()) {
+            okiBar.asociatedActivity = activityInstance
             activityInstance.save(flush: true)
+            okiBar.save(flush: true)
             render "Success"
         } else if (activityInstance.hasErrors()) {
             render "here are several data errors; please verify and re-send the information\n" + activityInstance.errors.getAllErrors().collect() {

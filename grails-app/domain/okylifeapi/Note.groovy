@@ -13,4 +13,15 @@ class Note {
             if (val < currentDate) return ['datePriorTo', val.toString(), currentDate.toString()]
         }
     }
+
+    @Override
+    public String toString() {
+        return "Note{" +
+                "id=" + id +
+                ", content='" + content + '\'' +
+                ", publicationDate=" + publicationDate +
+                ", imagePath='" + imagePath + '\'' +
+                ", version=" + version +
+                '}';
+    }
 }

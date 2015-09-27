@@ -21,4 +21,19 @@ class User {
             if (val > currentDate) return ['dateTooBig', val.toString(), currentDate.toString()]
         }
     }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", sex='" + sex + '\'' +
+                ", imagePath='" + imagePath + '\'' +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", birthDate=" + birthDate +
+                ", version=" + version +
+                '}';
+    }
 }

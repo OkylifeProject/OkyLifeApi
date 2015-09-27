@@ -12,4 +12,14 @@ class Activity {
         }
         activityType nullable: false, blank: false
     }
+
+    @Override
+    public String toString() {
+        return "Activity{" +
+                "activityType='" + activityType + '\'' +
+                ", creationDate=" + creationDate +
+                ", id=" + id +
+                ", version=" + version +
+                '}';
+    }
 }

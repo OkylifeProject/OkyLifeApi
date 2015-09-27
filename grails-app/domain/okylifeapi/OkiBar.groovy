@@ -22,4 +22,21 @@ class OkiBar {
         cadence min: (double) 0
         objetiveDistance min: (double) 0
     }
+
+    @Override
+    public String toString() {
+        return "OkiBar{" +
+                "id=" + id +
+                ", calories=" + calories +
+                ", steps=" + steps +
+                ", speed=" + speed +
+                ", hydration=" + hydration +
+                ", duration=" + duration +
+                ", rythm=" + rythm +
+                ", cardiacFrequency=" + cardiacFrequency +
+                ", cadence=" + cadence +
+                ", objetiveDistance=" + objetiveDistance +
+                ", version=" + version +
+                '}';
+    }
 }

@@ -11,6 +11,8 @@ class OkiBar {
     double cadence
     double objetiveDistance
 
+    static belongsTo = [asociatedActivity: Activity]
+
     static constraints = {
         calories min: (double) 0
         steps min: (double) 0

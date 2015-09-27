@@ -23,7 +23,7 @@ class OkiBarController {
         respond new OkiBar(params)
     }
 
-    def getOkiBarByActivity(int activityId) {
+    def getOkiBarByActivity(long activityId) {
         def activityInstance = Activity.findById(activityId)
         if (activityInstance) {
             def okiBar = activityInstance.getOkiBar()

@@ -6,6 +6,7 @@ import org.apache.commons.validator.routines.EmailValidator
 import org.codehaus.groovy.grails.web.json.JSONArray
 import org.codehaus.groovy.grails.web.json.JSONObject
 import sun.misc.BASE64Decoder
+import sun.misc.BASE64Encoder
 
 import static org.springframework.http.HttpStatus.*
 
@@ -94,6 +95,35 @@ class NoteController {
             response.status = 404
             render "Invalid Email"
         }
+    }
+
+    def getImageHash(long id) {
+        def noteInstance = Note.findById(id)
+        if (noteInstance.imagePath != null && noteInstance.imagePath != "") {
+            def noteImage = new File('app-data/note-pics/' + noteInstance.owner.getEmail() + '/' + noteInstance.imagePath)
+            if (noteImage.exists()) {
+                render noteImage.bytes.encodeAsSHA1()
+            } else {
+                render ""
+            }
+        }
+    }
+
+    def getImage(long id) {
+        def noteInstance = Note.findById(id)
+        JSONObject response = new JSONObject()
+        if (noteInstance.imagePath != null && noteInstance.imagePath != "") {
+            def noteImage = new File('app-data/note-pics/' + noteInstance.owner.getEmail() + '/' + noteInstance.imagePath)
+            if (noteImage.exists()) {
+                def encode = new BASE64Encoder().encode(noteImage.bytes)
+                response.put("imageBytes", encode)
+                render response as JSON
+            } else {
+                render ""
+            }
+
+        }
+
     }
 
     @Transactional

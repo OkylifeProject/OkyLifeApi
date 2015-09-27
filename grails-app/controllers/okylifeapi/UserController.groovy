@@ -88,7 +88,7 @@ class UserController {
         def userInstance = User.findByEmail(email)
         if (userInstance.imagePath != null && userInstance.imagePath != "") {
             def userImage = new File('app-data/profile-pics/' + userInstance.imagePath)
-            if (userImage) {
+            if (userImage.exists()) {
                 render userImage.bytes.encodeAsSHA1()
             } else {
                 render ""
@@ -101,7 +101,7 @@ class UserController {
         JSONObject response = new JSONObject()
         if (user.imagePath != null && user.imagePath != "") {
             def userImage = new File('app-data/profile-pics/' + user.imagePath)
-            if (userImage) {
+            if (userImage.exists()) {
                 def encode = new BASE64Encoder().encode(userImage.bytes)
                 response.put("imageBytes", encode)
                 render response as JSON

@@ -48,7 +48,7 @@ class ActivityController {
 
     def getActivitiesByUser(String email) {
         EmailValidator emailValidator = EmailValidator.getInstance()
-        if (emailValidator.isValid(email) {
+        if (emailValidator.isValid(email)) {
             def userInstance = User.findByEmail(email)
             if (userInstance) {
                 def userActivities = userInstance.getActivities()

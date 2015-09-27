@@ -9,6 +9,9 @@ class User {
     String password
     Date birthDate
 
+    static hasMany = [notes: Note, friends: User, messages: Message, activities: Activity]
+
+
     static constraints = {
         firstName blank: false, nullable: false
         lastName blank: true, nullable: true

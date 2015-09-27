@@ -51,7 +51,9 @@ class ActivityController {
         if (!activityInstance.hasErrors()) {
             render "Success"
         } else if (activityInstance.hasErrors()) {
-            render "here are several data errors; please verify and re-send the information\n" + activityInstance.errors.getAllErrors()
+            render "There are several data errors; please verify and re-send the information\n" + activityInstance.errors.getAllErrors().collect() {
+                it.defaultMessage
+            }
         }
     }
 

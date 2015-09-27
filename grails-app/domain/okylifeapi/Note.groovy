@@ -10,10 +10,6 @@ class Note {
     static constraints = {
         imagePath nullable: true, blank: false
         content nullable: false, blank: false
-        publicationDate validator: { val ->
-            Date currentDate = new Date()
-            if (val < currentDate) return ['datePriorTo', val.toString(), currentDate.toString()]
-        }
     }
 
     @Override

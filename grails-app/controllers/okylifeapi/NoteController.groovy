@@ -1,6 +1,7 @@
 package okylifeapi
 
 import grails.transaction.Transactional
+import org.apache.commons.validator.routines.EmailValidator
 
 import static org.springframework.http.HttpStatus.*
 
@@ -20,6 +21,31 @@ class NoteController {
 
     def create() {
         respond new Note(params)
+    }
+
+    def createNoteByUser(String email) {
+        EmailValidator emailValidator = EmailValidator.getInstance()
+        if (emailValidator.isValid(email)) {
+            def userInstance = User.findByEmail(email)
+            if (userInstance) {
+                def noteInstance = new Note(content: params.content, publicationDate: new Date())
+                noteInstance.save(flush: true)
+                if (!noteInstance.hasErrors()) {
+                    render "Success"
+                } else {
+                    response.status = 404
+                    render "There are several data errors; please verify and re-send the information\n" + userInstance.errors.getAllErrors().collect {
+                        it.defaultMessage
+                    }
+                }
+            } else {
+                response.status = 404
+                render "User doesnt exists"
+            }
+        } else {
+            response.status = 404
+            render "Invalid Email"
+        }
     }
 
     @Transactional

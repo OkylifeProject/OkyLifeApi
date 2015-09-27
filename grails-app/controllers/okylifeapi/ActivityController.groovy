@@ -45,18 +45,13 @@ class ActivityController {
             render "Activity name already in use"
             return
         }
-        def okiBar = new OkiBar()
         SimpleDateFormat format = new SimpleDateFormat("MM/dd/yy")
-        def activityInstance = new Activity(activityType: params.type, creationDate: format.parse(format.format(new Date())), description: params.description, name: params.name, owner: userInstance, okiBar: okiBar)
+        def activityInstance = new Activity(activityType: params.type, creationDate: format.parse(format.format(new Date())), description: params.description, name: params.name, owner: userInstance, okiBar: new OkiBar())
+        activityInstance.save(flush: true)
         if (!activityInstance.hasErrors()) {
-            okiBar.asociatedActivity = activityInstance
-            activityInstance.save(flush: true)
-            okiBar.save(flush: true)
             render "Success"
         } else if (activityInstance.hasErrors()) {
-            render "here are several data errors; please verify and re-send the information\n" + activityInstance.errors.getAllErrors().collect() {
-                it.defaultMessage
-            }
+            render "here are several data errors; please verify and re-send the information\n" + activityInstance.errors.getAllErrors()
         }
     }
 

@@ -23,7 +23,7 @@
 <div class="fieldcontain ${hasErrors(bean: activityInstance, field: 'description', 'error')} ">
 	<label for="description">
 		<g:message code="activity.description.label" default="Description"/>
-
+		
 	</label>
 	<g:textField name="description" value="${activityInstance?.description}"/>
 
@@ -45,16 +45,6 @@
 	</label>
 	<g:select id="okiBar" name="okiBar.id" from="${okylifeapi.OkiBar.list()}" optionKey="id" required=""
 			  value="${activityInstance?.okiBar?.id}" class="many-to-one"/>
-
-</div>
-
-<div class="fieldcontain ${hasErrors(bean: activityInstance, field: 'owner', 'error')} required">
-	<label for="owner">
-		<g:message code="activity.owner.label" default="Owner"/>
-		<span class="required-indicator">*</span>
-	</label>
-	<g:select id="owner" name="owner.id" from="${okylifeapi.User.list()}" optionKey="id" required=""
-			  value="${activityInstance?.owner?.id}" class="many-to-one"/>
 
 </div>
 

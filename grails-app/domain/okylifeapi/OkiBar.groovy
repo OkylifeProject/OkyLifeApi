@@ -10,8 +10,7 @@ class OkiBar {
     double cardiacFrequency
     double cadence
     double objetiveDistance
-
-    static belongsTo = [asociatedActivity: Activity]
+    Activity associatedActivity
 
     static constraints = {
         calories min: (double) 0

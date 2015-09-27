@@ -83,17 +83,6 @@
 			</li>
 		</g:if>
 
-		<g:if test="${activityInstance?.owner}">
-			<li class="fieldcontain">
-				<span id="owner-label" class="property-label"><g:message code="activity.owner.label"
-																		 default="Owner"/></span>
-
-				<span class="property-value" aria-labelledby="owner-label"><g:link controller="user" action="show"
-																				   id="${activityInstance?.owner?.id}">${activityInstance?.owner?.encodeAsHTML()}</g:link></span>
-
-			</li>
-		</g:if>
-
 	</ol>
 	<g:form url="[resource: activityInstance, action: 'delete']" method="DELETE">
 		<fieldset class="buttons">

@@ -42,8 +42,6 @@
 
 			<th><g:message code="activity.okiBar.label" default="Oki Bar"/></th>
 
-			<th><g:message code="activity.owner.label" default="Owner"/></th>
-
 		</tr>
 		</thead>
 		<tbody>
@@ -60,8 +58,6 @@
 				<td>${fieldValue(bean: activityInstance, field: "name")}</td>
 
 				<td>${fieldValue(bean: activityInstance, field: "okiBar")}</td>
-
-				<td>${fieldValue(bean: activityInstance, field: "owner")}</td>
 
 			</tr>
 		</g:each>

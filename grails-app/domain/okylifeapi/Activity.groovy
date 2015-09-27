@@ -6,19 +6,16 @@ class Activity {
     Date creationDate;
     String description;
     String name;
+    OkiBar okiBar;
 
-    static belongsTo = [owner: User]
     static hasOne = [okiBar: OkiBar]
 
-
     static constraints = {
-        creationDate nullable: false, validator: { val ->
-            Date currentDate = new Date()
-            if (val < currentDate) return ['datePriorTo', val.toString(), currentDate.toString()]
-        }
+        creationDate nullable: false
         activityType nullable: false, blank: false
         description nullable: true, blank: false
         name nullable: false, blank: false, unique: true
+        okiBar unique: true, nullable: true
     }
 
     @Override

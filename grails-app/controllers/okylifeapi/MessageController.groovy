@@ -4,7 +4,7 @@ import grails.transaction.Transactional
 
 import static org.springframework.http.HttpStatus.*
 
-@Transactional(readOnly = true)
+@Transactional(readOnly = false)
 class MessageController {
 
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]

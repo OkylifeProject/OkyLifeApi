@@ -4,6 +4,9 @@ class Message {
     String content
     String subject
 
+    static belongsTo = [recipient: User]
+    static hasOne = [remitent: User]
+
     static constraints = {
         subject nullable: false, blank: false
         content nullable: false

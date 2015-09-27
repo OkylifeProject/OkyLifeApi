@@ -1,6 +1,9 @@
 package okylifeapi
 
+import grails.converters.JSON
 import grails.transaction.Transactional
+import org.apache.commons.validator.routines.EmailValidator
+import org.codehaus.groovy.grails.web.json.JSONObject
 import sun.misc.BASE64Decoder
 
 import java.text.SimpleDateFormat
@@ -53,6 +56,30 @@ class UserController {
             }
         } else {
             render "Success"
+        }
+    }
+
+    def loginUser() {
+        EmailValidator emailValidator = EmailValidator.getInstance();
+        def userInstance
+        if (emailValidator.isValid(params.email)) {
+            userInstance = User.findByEmailAndPassword(params.email, params.password)
+        }
+        JSONObject myResponse = new JSONObject();
+        myResponse.put("status", "success")
+        if (userInstance) {
+            def userPhoto = new File('app-data/profile-pics/' + userInstance.rutaFoto)
+            if (userPhoto.exists()) {
+                myResponse.put("imageHash", userPhoto.bytes.encodeAsSHA1())
+            } else {
+                myResponse.put("imageHash", "")
+            }
+            myResponse.put("email", userInstance.email)
+            myResponse.put("user", userInstance.usuario)
+            myResponse.put("id", userInstance.id)
+            render myResponse as JSON
+        } else {
+            render "Incorrect email or password. Please try again"
         }
     }
 

@@ -69,9 +69,8 @@ class ActivityController {
                 }
             } else {
                 response.status = 404
-                render
+                render "User doesnt exists"
             }
-
         } else {
             response.status = 404
             render "Invalid email"

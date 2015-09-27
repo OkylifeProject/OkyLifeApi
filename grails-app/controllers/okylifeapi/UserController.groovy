@@ -76,7 +76,6 @@ class UserController {
                 myResponse.put("imageHash", "")
             }
             myResponse.put("email", userInstance.email)
-            myResponse.put("user", userInstance.usuario)
             myResponse.put("id", userInstance.id)
             render myResponse as JSON
         } else {

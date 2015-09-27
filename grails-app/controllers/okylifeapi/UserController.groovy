@@ -79,6 +79,7 @@ class UserController {
             myResponse.put("id", userInstance.id)
             render myResponse as JSON
         } else {
+            response.status = 404
             render "Incorrect email or password. Please try again"
         }
     }

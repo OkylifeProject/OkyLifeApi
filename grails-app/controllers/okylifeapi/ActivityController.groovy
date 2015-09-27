@@ -1,6 +1,10 @@
 package okylifeapi
 
+import grails.converters.JSON
 import grails.transaction.Transactional
+import org.apache.commons.validator.routines.EmailValidator
+import org.codehaus.groovy.grails.web.json.JSONArray
+import org.codehaus.groovy.grails.web.json.JSONObject
 
 import java.text.SimpleDateFormat
 
@@ -39,6 +43,38 @@ class ActivityController {
             render "here are several data errors; please verify and re-send the information\n" + activityInstance.errors.getAllErrors().collect() {
                 it.defaultMessage
             }
+        }
+    }
+
+    def getActivitiesByUser(String email) {
+        EmailValidator emailValidator = EmailValidator.getInstance()
+        if (emailValidator.isValid(email) {
+            def userInstance = User.findByEmail(email)
+            if (userInstance) {
+                def userActivities = userInstance.getActivities()
+                if (userActivities) {
+                    JSONArray jsonArray = new JSONArray()
+                    userActivities.each {
+                        JSONObject jsonObject = new JSONObject()
+                        jsonObject.put("id", it.getId())
+                        jsonObject.put("activityType", it.getActivityType())
+                        jsonObject.put("name", it.getName())
+                        jsonObject.put("description", it.getDescription())
+                        jsonArray.put(jsonObject)
+                    }
+                    render jsonArray as JSON
+                } else {
+                    response.status = 404
+                    render "User doesnt have Activities"
+                }
+            } else {
+                response.status = 404
+                render
+            }
+
+        } else {
+            response.status = 404
+            render "Invalid email"
         }
     }
 

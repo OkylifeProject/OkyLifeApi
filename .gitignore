@@ -1,6 +1,5 @@
 # Created by .ignore support plugin (hsz.mobi)
 target/*
-app-data/*
 .idea/workspace.xml
 devDb.h2.db
 devDb.lock.d

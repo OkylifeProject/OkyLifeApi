@@ -11,6 +11,7 @@ class User {
 
     static hasMany = [notes: Note, friends: User, messages: Message, activities: Activity]
 
+    static mappedBy = [messages: 'recipient']
 
     static constraints = {
         firstName blank: false, nullable: false

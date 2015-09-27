@@ -2,6 +2,7 @@ package okylifeapi
 
 import grails.transaction.Transactional
 import org.apache.commons.validator.routines.EmailValidator
+import sun.misc.BASE64Decoder
 
 import static org.springframework.http.HttpStatus.*
 
@@ -31,6 +32,14 @@ class NoteController {
                 def noteInstance = new Note(content: params.content, publicationDate: new Date())
                 noteInstance.save(flush: true)
                 if (!noteInstance.hasErrors()) {
+                    if (params.image) {
+                        def newFile = new File('app-data/note-pics/' + params.email + '/' + noteInstance.getId() + '-pic.jpg')
+                        newFile.getParentFile().mkdirs()
+                        newFile.createNewFile()
+                        newFile.bytes = new BASE64Decoder().decodeBuffer(params.image)
+                        noteInstance.imagePath = newFile.getName()
+                        noteInstance.save(flush: true)
+                    }
                     render "Success"
                 } else {
                     response.status = 404

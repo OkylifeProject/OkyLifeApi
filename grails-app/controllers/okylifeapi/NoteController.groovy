@@ -1,7 +1,10 @@
 package okylifeapi
 
+import grails.converters.JSON
 import grails.transaction.Transactional
 import org.apache.commons.validator.routines.EmailValidator
+import org.codehaus.groovy.grails.web.json.JSONArray
+import org.codehaus.groovy.grails.web.json.JSONObject
 import sun.misc.BASE64Decoder
 
 import static org.springframework.http.HttpStatus.*
@@ -33,7 +36,7 @@ class NoteController {
                 noteInstance.save(flush: true)
                 if (!noteInstance.hasErrors()) {
                     if (params.image) {
-                        def newFile = new File('app-data/note-pics/' + params.email + '/' + noteInstance.getId() + '-pic.jpg')
+                        def newFile = new File('app-data/note-pics/' + email + '/' + noteInstance.getId() + '-pic.jpg')
                         newFile.getParentFile().mkdirs()
                         newFile.createNewFile()
                         newFile.bytes = new BASE64Decoder().decodeBuffer(params.image)
@@ -46,6 +49,42 @@ class NoteController {
                     render "There are several data errors; please verify and re-send the information\n" + userInstance.errors.getAllErrors().collect {
                         it.defaultMessage
                     }
+                }
+            } else {
+                response.status = 404
+                render "User doesnt exists"
+            }
+        } else {
+            response.status = 404
+            render "Invalid Email"
+        }
+    }
+
+    def getNotesByUser(String email) {
+        EmailValidator emailValidator = EmailValidator.getInstance()
+        if (emailValidator.isValid(email)) {
+            def userInstance = User.findByEmail(email)
+            if (userInstance) {
+                def notesInstance = userInstance.getNotes()
+                if (notesInstance) {
+                    JSONArray jsonArray = new JSONArray()
+                    notesInstance.each {
+                        JSONObject jsonObject = new JSONObject()
+                        jsonObject.put("id", it.getId())
+                        jsonObject.put("content", it.getContent())
+                        jsonObject.put("publicationDate", it.getPublicationDate())
+                        def noteImage = new File('app-data/note-pics/' + email + '/' + it.imagePath)
+                        if (noteImage.exists()) {
+                            jsonObject.put("imageHash", noteImage.bytes.encodeAsSHA1())
+                        } else {
+                            jsonObject.put("imageHash", "")
+                        }
+                        jsonArray.put(jsonObject)
+                    }
+                    render jsonArray as JSON
+                } else {
+                    response.status = 404
+                    render "User doenst have Notes"
                 }
             } else {
                 response.status = 404

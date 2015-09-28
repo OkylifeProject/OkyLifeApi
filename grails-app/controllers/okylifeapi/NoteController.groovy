@@ -33,7 +33,7 @@ class NoteController {
         if (emailValidator.isValid(email)) {
             def userInstance = User.findByEmail(email)
             if (userInstance) {
-                def noteInstance = new Note(content: params.content, publicationDate: new Date())
+                def noteInstance = new Note(content: params.content, publicationDate: new Date(), owner: userInstance)
                 noteInstance.save(flush: true)
                 if (!noteInstance.hasErrors()) {
                     if (params.image) {
@@ -47,9 +47,7 @@ class NoteController {
                     render "Success"
                 } else {
                     response.status = 404
-                    render "There are several data errors; please verify and re-send the information\n" + userInstance.errors.getAllErrors().collect {
-                        it.defaultMessage
-                    }
+                    render "There are several data errors; please verify and re-send the information\n" + userInstance.errors.getAllErrors()
                 }
             } else {
                 response.status = 404

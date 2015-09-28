@@ -1,7 +1,10 @@
 package okylifeapi
 
+import grails.converters.JSON
 import grails.transaction.Transactional
 import org.apache.commons.validator.routines.EmailValidator
+import org.codehaus.groovy.grails.web.json.JSONArray
+import org.codehaus.groovy.grails.web.json.JSONObject
 
 import static org.springframework.http.HttpStatus.*
 
@@ -47,7 +50,38 @@ class MessageController {
             response.status = 404
             render "Invalid email"
         }
+    }
 
+    def getMessagesByUser(String email) {
+        EmailValidator emailValidator = EmailValidator.getInstance()
+        if (emailValidator.isValid(email)) {
+            def userInstance = User.findByEmail(email)
+            if (userInstance) {
+                def messageInstances = userInstance.getMessages()
+                if (messageInstances) {
+                    JSONArray jsonArray = new JSONArray()
+                    messageInstances.each {
+                        JSONObject jsonObject = new JSONObject()
+                        jsonObject.put("id", it.getId())
+                        jsonObject.put("remitentEmail", it.getRemitent().getEmail())
+                        jsonObject.put("recipientEmail", it.getRecipient().getEmail())
+                        jsonObject.put("subject", it.getSubject())
+                        jsonObject.put("content", it.getContent())
+                        jsonArray.put(jsonObject)
+                    }
+                    render jsonArray as JSON
+                } else {
+                    response.status = 404
+                    render "User doesnt have messages"
+                }
+            } else {
+                response.status = 404
+                render "User doenst exists"
+            }
+        } else {
+            esponse.status = 404
+            render "Invalid email"
+        }
     }
 
     @Transactional

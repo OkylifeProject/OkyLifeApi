@@ -96,6 +96,29 @@ class UserController {
         }
     }
 
+    def getUserByEmail(String email) {
+        EmailValidator emailValidator = EmailValidator.getInstance();
+        if (emailValidator.isValid(email)) {
+            def userInstance = User.findByEmail(email)
+            if (userInstance) {
+                JSONObject jsonObject = new JSONObject()
+                jsonObject.put("id", userInstance.getId())
+                jsonObject.put("firstName", userInstance.getFirstName())
+                jsonObject.put("lastName", userInstance.getLastName())
+                jsonObject.put("email", userInstance.getEmail())
+                jsonObject.put("birthDate", userInstance.getBirthDate())
+                render jsonObject as JSON
+            } else {
+                response.status = 404
+                render "User doenst exists"
+            }
+        } else {
+            response.status = 404
+            render "Invalid Email"
+        }
+
+    }
+
     def getImage(String email) {
         def user = User.findByEmail(email)
         JSONObject response = new JSONObject()

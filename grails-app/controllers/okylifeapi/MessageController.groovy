@@ -1,6 +1,7 @@
 package okylifeapi
 
 import grails.transaction.Transactional
+import org.apache.commons.validator.routines.EmailValidator
 
 import static org.springframework.http.HttpStatus.*
 
@@ -20,6 +21,33 @@ class MessageController {
 
     def create() {
         respond new Message(params)
+    }
+
+    def sendMessage(String emailRecipient, String emailRemitent) {
+        EmailValidator emailValidator = EmailValidator.getInstance()
+        if (emailValidator.isValid(emailRecipient) && emailValidator.isValid(emailRemitent)) {
+            def userRecipient = User.findByEmail(emailRecipient)
+            def userRemitent = User.findByEmail(emailRemitent)
+            if (userRecipient && userRemitent) {
+                def message = new Message(subject: params.subject, content: params.content, remitent: userRemitent, recipient: userRecipient)
+                message.save(flush: true)
+                if (!message.hasErrors()) {
+                    render "Success"
+                } else {
+                    response.status = 404
+                    render "There are several data errors; please verify and re-send the information\n" + message.errors.getAllErrors().collect {
+                        it.defaultMessage
+                    }
+                }
+            } else {
+                response.status = 404
+                render "User doenst exists"
+            }
+        } else {
+            response.status = 404
+            render "Invalid email"
+        }
+
     }
 
     @Transactional

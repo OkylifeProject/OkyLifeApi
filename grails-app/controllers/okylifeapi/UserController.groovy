@@ -107,6 +107,7 @@ class UserController {
                 jsonObject.put("lastName", userInstance.getLastName())
                 jsonObject.put("email", userInstance.getEmail())
                 jsonObject.put("birthDate", userInstance.getBirthDate())
+                jsonObject.put("sex", userInstance.getSex())
                 render jsonObject as JSON
             } else {
                 response.status = 404
@@ -116,7 +117,6 @@ class UserController {
             response.status = 404
             render "Invalid Email"
         }
-
     }
 
     def getImage(String email) {
@@ -134,6 +134,63 @@ class UserController {
 
         }
 
+    }
+
+    def addFriend(String emailCurrent, String emailFriend) {
+        EmailValidator emailValidator = EmailValidator.getInstance()
+        if (emailValidator.isValid(emailCurrent) && emailValidator.isValid(emailFriend)) {
+            def userCurrent = User.findByEmail(emailCurrent)
+            def userFriend = User.findByEmail(emailFriend)
+            if (userCurrent && userFriend) {
+                userCurrent.friends.add(userFriend)
+                userCurrent.save(flush: true)
+                render "Success"
+            } else {
+                response.status = 404
+                render "User doenst exists"
+            }
+
+        } else {
+            response.status 404
+            render "Invalid Email"
+        }
+    }
+
+    def searchFriend(String emailCurrent, String emailFriend) {
+        EmailValidator emailValidator = EmailValidator.getInstance()
+        if (emailValidator.isValid(emailCurrent) && emailValidator.isValid(emailFriend)) {
+            def userCurrent = User.findByEmail(emailCurrent)
+            def userFriend = User.findByEmail(emailFriend)
+            if (userCurrent && userFriend) {
+                def userFriends = userCurrent.getFriends()
+                if (userFriends) {
+                    userFriends.each {
+                        if (it.getId() == userFriend.getId()) {
+                            JSONObject jsonObject = new JSONObject()
+                            jsonObject.put("id", it.getId())
+                            jsonObject.put("email", it.getEmail())
+                            jsonObject.put("sex", it.getSex())
+                            jsonObject.put("firstName", it.getFirstName())
+                            jsonObject.put("lastName", it.getLastName())
+                            jsonObject.put("birthDate", it.getBirthDate())
+                            render jsonObject as JSON
+                            return
+                        }
+                    }
+                    response.status = 404
+                    render "Friend not found in FriendList"
+                } else {
+                    response.status = 404
+                    render "User doenst have Friends"
+                }
+            } else {
+                response.status = 404
+                render "User doenst exists"
+            }
+        } else {
+            response.status 404
+            render "Invalid Email"
+        }
     }
 
     @Transactional

@@ -4,7 +4,6 @@ target/*
 devDb.h2.db
 devDb.lock.d
 OkyLifeApi.iml
-application.properties
 /devDb.lock.db
 /OkyLifeApi.iml
 /OkyLifeApi-grailsPlugins.iml

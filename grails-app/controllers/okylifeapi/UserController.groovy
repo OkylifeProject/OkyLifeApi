@@ -3,6 +3,7 @@ package okylifeapi
 import grails.converters.JSON
 import grails.transaction.Transactional
 import org.apache.commons.validator.routines.EmailValidator
+import org.codehaus.groovy.grails.web.json.JSONArray
 import org.codehaus.groovy.grails.web.json.JSONObject
 import sun.misc.BASE64Decoder
 import sun.misc.BASE64Encoder
@@ -52,10 +53,7 @@ class UserController {
         }
 
         if (userInstance.hasErrors()) {
-            render "There are several data errors; please verify and re-send the information\n" + userInstance.errors.getAllErrors().collect() {
-                it.defaultMessage
-            }
-
+            render "There are several data errors; please verify and re-send the information\n" + userInstance.errors.getAllErrors()
         } else {
             render "Success"
         }
@@ -201,7 +199,14 @@ class UserController {
             if (userInstance) {
                 def userFriends = userInstance.getFriends()
                 if (userFriends) {
-                    render userFriends as JSON
+                    JSONArray jsonArray = new JSONArray()
+                    userFriends.each {
+                        JSONObject jsonObject = new JSONObject()
+                        jsonObject.put("email", it.getEmail())
+                        jsonObject.put("id", it.getId())
+                        jsonArray.put(jsonObject)
+                    }
+                    render jsonArray as JSON
                 } else {
                     response.status = 404
                     render "User doenst have Friends"

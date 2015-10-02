@@ -38,7 +38,7 @@ class UserController {
         }
         Date birthDate = format.parse(params.birthDate)
 
-        def userInstance = new User(sex: params.sex, firstName: params.firstName, lastName: params.lastName, password: params.password, email: params.email, birthDate: birthDate)
+        def userInstance = new User(registerType: params.registerType, sex: params.sex, firstName: params.firstName, lastName: params.lastName, password: params.password, email: params.email, birthDate: birthDate)
         userInstance.save(flush: true)
         if (!userInstance.hasErrors()) {
             if (params.image) {
@@ -52,9 +52,10 @@ class UserController {
         }
 
         if (userInstance.hasErrors()) {
-            render "There are several data errors; please verify and re-send the information\n" + userInstance.errors.getAllErrors().collect {
+            render "There are several data errors; please verify and re-send the information\n" + userInstance.errors.getAllErrors().collect() {
                 it.defaultMessage
             }
+
         } else {
             render "Success"
         }
@@ -179,6 +180,28 @@ class UserController {
                     }
                     response.status = 404
                     render "Friend not found in FriendList"
+                } else {
+                    response.status = 404
+                    render "User doenst have Friends"
+                }
+            } else {
+                response.status = 404
+                render "User doenst exists"
+            }
+        } else {
+            response.status 404
+            render "Invalid Email"
+        }
+    }
+
+    def getFriends(String email) {
+        EmailValidator emailValidator = EmailValidator.getInstance()
+        if (emailValidator.isValid(email)) {
+            def userInstance = User.findByEmail(email)
+            if (userInstance) {
+                def userFriends = userInstance.getFriends()
+                if (userFriends) {
+                    render userFriends as JSON
                 } else {
                     response.status = 404
                     render "User doenst have Friends"

@@ -113,7 +113,7 @@ class UserController {
                 render jsonObject as JSON
             } else {
                 response.status = 404
-                render "User doenst exists"
+                render "User doesnt exists"
             }
         } else {
             response.status = 404

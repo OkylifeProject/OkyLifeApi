@@ -37,6 +37,7 @@ class OkiBar {
                 ", cardiacFrequency=" + cardiacFrequency +
                 ", cadence=" + cadence +
                 ", objetiveDistance=" + objetiveDistance +
+                ", associatedActivity=" + associatedActivity +
                 ", version=" + version +
                 '}';
     }

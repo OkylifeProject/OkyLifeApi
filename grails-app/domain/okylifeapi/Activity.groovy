@@ -18,12 +18,16 @@ class Activity {
         okiBar unique: true, nullable: true
     }
 
+
     @Override
     public String toString() {
         return "Activity{" +
-                "activityType='" + activityType + '\'' +
+                "id=" + id +
+                ", activityType='" + activityType + '\'' +
                 ", creationDate=" + creationDate +
-                ", id=" + id +
+                ", description='" + description + '\'' +
+                ", name='" + name + '\'' +
+                ", okiBar=" + okiBar +
                 ", version=" + version +
                 '}';
     }

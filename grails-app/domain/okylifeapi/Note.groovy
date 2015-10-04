@@ -20,6 +20,7 @@ class Note {
                 ", publicationDate=" + publicationDate +
                 ", imagePath='" + imagePath + '\'' +
                 ", version=" + version +
+                ", owner=" + owner +
                 '}';
     }
 }

@@ -19,7 +19,9 @@ class Message {
                 "id=" + id +
                 ", content='" + content + '\'' +
                 ", subject='" + subject + '\'' +
+                ", remitent=" + remitent +
                 ", version=" + version +
+                ", recipient=" + recipient +
                 '}';
     }
 }

@@ -37,8 +37,13 @@ class User {
                 ", imagePath='" + imagePath + '\'' +
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
-                ", birthDate=" + birthDate +
+                ", registerType='" + registerType + '\'' +
+                ", age='" + age + '\'' +
                 ", version=" + version +
+                ", friends=" + friends +
+                ", activities=" + activities +
+                ", notes=" + notes +
+                ", messages=" + messages +
                 '}';
     }
 }

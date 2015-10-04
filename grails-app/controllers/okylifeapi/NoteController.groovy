@@ -83,7 +83,7 @@ class NoteController {
                     render jsonArray as JSON
                 } else {
                     response.status = 404
-                    render "User doenst have Notes"
+                    render "User doesnt have Notes"
                 }
             } else {
                 response.status = 404

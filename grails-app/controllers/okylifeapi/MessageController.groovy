@@ -44,7 +44,7 @@ class MessageController {
                 }
             } else {
                 response.status = 404
-                render "User doenst exists"
+                render "User doesnt exists"
             }
         } else {
             response.status = 404
@@ -76,7 +76,7 @@ class MessageController {
                 }
             } else {
                 response.status = 404
-                render "User doenst exists"
+                render "User doesnt exists"
             }
         } else {
             esponse.status = 404

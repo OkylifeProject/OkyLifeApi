@@ -38,7 +38,7 @@ class ActivityController {
         def userInstance = User.findByEmail(email)
         if (!userInstance) {
             response.status = 404
-            render "User doenst exists"
+            render "User doesnt exists"
             return
         }
         if (Activity.findByName(params.name)) {

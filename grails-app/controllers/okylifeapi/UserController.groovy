@@ -149,7 +149,7 @@ class UserController {
                 render "Success"
             } else {
                 response.status = 404
-                render "User doenst exists"
+                render "User doesnt exists"
             }
 
         } else {
@@ -187,7 +187,7 @@ class UserController {
                 }
             } else {
                 response.status = 404
-                render "User doenst exists"
+                render "User doesnt exists"
             }
         } else {
             response.status 404
@@ -216,7 +216,7 @@ class UserController {
                 }
             } else {
                 response.status = 404
-                render "User doenst exists"
+                render "User doesnt exists"
             }
         } else {
             response.status 404

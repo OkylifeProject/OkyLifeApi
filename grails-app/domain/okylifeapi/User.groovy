@@ -22,7 +22,11 @@ class User {
         email blank: false, nullable: false, email: true, unique: true
         password blank: false, nullable: true, size: 5..100, matches: "[a-zA-Z0-9]*", password: true
         age nullable: true, validator: { val ->
-            if (Integer.valueOf(val) > 150 || Integer.valueOf(val) < 0) return ['invalidAge [0-150]', val.toString()]
+            if (val) {
+                if (Integer.valueOf(val) > 150 || Integer.valueOf(val) < 0) {
+                    return ['invalidAge [0-150]', val.toString()]
+                }
+            }
         }
         registerType inList: ["Facebook", "Google", "Api"], nullable: false, blank: false
     }

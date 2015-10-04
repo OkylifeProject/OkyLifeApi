@@ -37,12 +37,7 @@ class UserController {
             render "Email already in use"
             return
         }
-        Date birthDate = null;
-        if (params.birthDate) {
-            birthDate = format.parse(params.birthDate)
-        }
-
-        def userInstance = new User(registerType: params.registerType, sex: params.sex, firstName: params.firstName, lastName: params.lastName, password: params.password, email: params.email, birthDate: birthDate)
+        def userInstance = new User(registerType: params.registerType, sex: params.sex, firstName: params.firstName, lastName: params.lastName, password: params.password, email: params.email, age: params.age)
         userInstance.save(flush: true)
         if (!userInstance.hasErrors()) {
             if (params.image) {
@@ -108,7 +103,7 @@ class UserController {
                 jsonObject.put("firstName", userInstance.getFirstName())
                 jsonObject.put("lastName", userInstance.getLastName())
                 jsonObject.put("email", userInstance.getEmail())
-                jsonObject.put("birthDate", userInstance.getBirthDate())
+                jsonObject.put("age", userInstance.getAge())
                 jsonObject.put("sex", userInstance.getSex())
                 render jsonObject as JSON
             } else {
@@ -174,7 +169,7 @@ class UserController {
                             jsonObject.put("sex", it.getSex())
                             jsonObject.put("firstName", it.getFirstName())
                             jsonObject.put("lastName", it.getLastName())
-                            jsonObject.put("birthDate", it.getBirthDate())
+                            jsonObject.put("age", it.getAge())
                             render jsonObject as JSON
                             return
                         }

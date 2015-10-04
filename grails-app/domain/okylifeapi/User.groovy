@@ -8,7 +8,7 @@ class User {
     String email
     String password
     String registerType;
-    Date birthDate
+    String age
 
     static hasMany = [notes: Note, friends: User, messages: Message, activities: Activity]
 
@@ -21,9 +21,8 @@ class User {
         imagePath blank: false, nullable: true
         email blank: false, nullable: false, email: true, unique: true
         password blank: false, nullable: true, size: 5..100, matches: "[a-zA-Z0-9]*", password: true
-        birthDate nullable: true, validator: { val ->
-            Date currentDate = new Date()
-            if (val > currentDate) return ['dateTooBig', val.toString(), currentDate.toString()]
+        age nullable: true, validator: { val ->
+            if (Integer.valueOf(val) > 150 || Integer.valueOf(val) < 0) return ['invalidAge [0-150]', val.toString()]
         }
         registerType inList: ["Facebook", "Google", "Api"], nullable: false, blank: false
     }

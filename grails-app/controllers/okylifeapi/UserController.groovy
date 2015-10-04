@@ -183,7 +183,7 @@ class UserController {
                     render "Friend not found in FriendList"
                 } else {
                     response.status = 404
-                    render "User doenst have Friends"
+                    render "User doesnt have Friends"
                 }
             } else {
                 response.status = 404
@@ -212,7 +212,7 @@ class UserController {
                     render jsonArray as JSON
                 } else {
                     response.status = 404
-                    render "User doenst have Friends"
+                    render "User doesnt have Friends"
                 }
             } else {
                 response.status = 404

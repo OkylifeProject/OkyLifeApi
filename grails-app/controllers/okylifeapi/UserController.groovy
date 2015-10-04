@@ -37,7 +37,9 @@ class UserController {
             render "Email already in use"
             return
         }
-        Date birthDate = format.parse(params.birthDate)
+        if (params.birthDate) {
+            Date birthDate = format.parse(params.birthDate)
+        }
 
         def userInstance = new User(registerType: params.registerType, sex: params.sex, firstName: params.firstName, lastName: params.lastName, password: params.password, email: params.email, birthDate: birthDate)
         userInstance.save(flush: true)

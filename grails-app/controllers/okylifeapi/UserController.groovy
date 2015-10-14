@@ -106,6 +106,17 @@ class UserController {
                 jsonObject.put("email", userInstance.getEmail())
                 jsonObject.put("age", userInstance.getAge())
                 jsonObject.put("sex", userInstance.getSex())
+
+                if (userInstance.imagePath != null && userInstance.imagePath != "") {
+                    def userImage = new File('app-data/profile-pics/' + userInstance.imagePath)
+                    if (userImage.exists()) {
+                        def encode = new BASE64Encoder().encode(userImage.bytes)
+                        jsonObject.put("imageBytes", encode)
+                    } else {
+                        jsonObject.put("imageBytes", "")
+                    }
+
+                }
                 render jsonObject as JSON
             } else {
                 response.status = 404

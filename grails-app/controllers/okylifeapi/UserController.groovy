@@ -76,7 +76,7 @@ class UserController {
             }
             if ((params.password1 && params.password2) && (params.password1 != "" && params.password2 != "")) {
                 if (params.password1 == params.password2) {
-                    userInstance.password = params.password
+                    userInstance.password = params.password1
                 } else {
                     render "Passwords doesn't match"
                     return

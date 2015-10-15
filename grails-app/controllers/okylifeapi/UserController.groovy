@@ -32,6 +32,12 @@ class UserController {
 
     def registerUser() {
 
+        EmailValidator emailValidator = EmailValidator.getInstance()
+        if (!emailValidator.isValid(params.email)) {
+            render "Invalid Email"
+            return
+        }
+
         SimpleDateFormat format = new SimpleDateFormat("MM/dd/yy")
         if (User.findByEmail(params.email)) {
             render "Email already in use"
@@ -54,6 +60,46 @@ class UserController {
             render "There are several data errors; please verify and re-send the information\n" + userInstance.errors.getAllErrors()
         } else {
             render "Success"
+        }
+    }
+
+    def updateUserByEmail(String email) {
+        EmailValidator emailValidator = EmailValidator.getInstance()
+        if (!emailValidator.isValid(email)) {
+            render "Invalid Email"
+            return
+        }
+        User userInstance = User.findByEmail(email)
+        if (userInstance) {
+            if (params.firstName) {
+                userInstance.firstName = params.firstName
+            }
+            if ((params.password1 && params.password2) && (params.password1 != "" && params.password2 != "")) {
+                if (params.password1 == params.password2) {
+                    userInstance.password = params.password
+                } else {
+                    render "Passwords doesn't match"
+                    return
+                }
+            }
+            if (params.age) {
+                userInstance.age = params.age
+            }
+            if (params.image) {
+                def newFile = new File('app-data/profile-pics/' + params.email + '-pic.jpg')
+                newFile.getParentFile().mkdirs()
+                newFile.createNewFile()
+                newFile.bytes = new BASE64Decoder().decodeBuffer(params.image)
+                userInstance.imagePath = newFile.getName()
+            }
+            userInstance.save(flush: true)
+            if (userInstance.hasErrors()) {
+                render "There are several data errors; please verify and re-send the information\n" + userInstance.errors.getAllErrors()
+            } else {
+                render "Success"
+            }
+        } else {
+            render "User doesn't exists"
         }
     }
 

@@ -64,6 +64,7 @@ class UserController {
     }
 
     def updateUserByEmail(String email) {
+        boolean passwords = false
         EmailValidator emailValidator = EmailValidator.getInstance()
         if (!emailValidator.isValid(email)) {
             render "Invalid Email"
@@ -77,6 +78,7 @@ class UserController {
             if ((params.password1 && params.password2) && (params.password1 != "" && params.password2 != "")) {
                 if (params.password1 == params.password2) {
                     userInstance.password = params.password1
+                    passwords = true
                 } else {
                     render "Passwords doesn't match"
                     return
@@ -96,7 +98,11 @@ class UserController {
             if (userInstance.hasErrors()) {
                 render "There are several data errors; please verify and re-send the information\n" + userInstance.errors.getAllErrors()
             } else {
-                render "Success"
+                if (passwords) {
+                    render "Success, password changed"
+                } else {
+                    render "Success"
+                }
             }
         } else {
             render "User doesn't exists"

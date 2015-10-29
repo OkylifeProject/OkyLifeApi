@@ -48,7 +48,7 @@ class ActivityController {
             startLocation = new Location(Double.valueOf(params.startLatitude), Double.valueOf(params.startLongitude))
         }
         //TODO: Delete OkyBar from constructor
-        def activityInstance = new Activity(creationDate: format.parse(format.format(new Date())), description: params.description, name: params.name, owner: userInstance, startLocation: startLocation, okiBar: new OkiBar())
+        def activityInstance = new Activity(creationDate: format.parse(format.format(new Date())), description: params.description, name: params.name, user: userInstance, startLocation: startLocation, okiBar: new OkiBar())
         activityInstance.save(flush: true)
         if (!activityInstance.hasErrors()) {
             render "Success"
@@ -72,6 +72,7 @@ class ActivityController {
                         jsonObject.put("id", it.getId())
                         jsonObject.put("name", it.getName())
                         jsonObject.put("description", it.getDescription())
+                        jsonObject.put("creationDate", it.creationDate)
                         if (it.getStartLocation() != null) {
                             Location location = it.getStartLocation()
                             jsonObject.put("startLatitude", location.getLatitude())

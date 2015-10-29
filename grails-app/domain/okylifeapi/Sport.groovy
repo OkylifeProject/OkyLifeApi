@@ -11,7 +11,7 @@ class Sport extends Activity {
     double targetDistance
     double hydration
     ArrayList<Location> locations
-    
+
     static constraints = {
         hydration min: (double) 0
         duration min: (double) 0

@@ -12,16 +12,4 @@ class Message {
         content nullable: false
         remitent nullable: false
     }
-
-    @Override
-    public String toString() {
-        return "Message{" +
-                "id=" + id +
-                ", content='" + content + '\'' +
-                ", subject='" + subject + '\'' +
-                ", remitent=" + remitent +
-                ", version=" + version +
-                ", recipient=" + recipient +
-                '}';
-    }
 }

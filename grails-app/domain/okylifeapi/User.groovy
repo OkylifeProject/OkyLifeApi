@@ -30,24 +30,4 @@ class User {
         }
         registerType inList: ["Facebook", "Google", "Api"], nullable: false, blank: false
     }
-
-    @Override
-    public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", sex='" + sex + '\'' +
-                ", imagePath='" + imagePath + '\'' +
-                ", email='" + email + '\'' +
-                ", password='" + password + '\'' +
-                ", registerType='" + registerType + '\'' +
-                ", age='" + age + '\'' +
-                ", version=" + version +
-                ", friends=" + friends +
-                ", activities=" + activities +
-                ", notes=" + notes +
-                ", messages=" + messages +
-                '}';
-    }
 }

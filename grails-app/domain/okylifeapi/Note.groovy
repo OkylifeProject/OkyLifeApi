@@ -11,16 +11,4 @@ class Note {
         imagePath nullable: true, blank: false
         content nullable: false, blank: false
     }
-
-    @Override
-    public String toString() {
-        return "Note{" +
-                "id=" + id +
-                ", content='" + content + '\'' +
-                ", publicationDate=" + publicationDate +
-                ", imagePath='" + imagePath + '\'' +
-                ", version=" + version +
-                ", owner=" + owner +
-                '}';
-    }
 }

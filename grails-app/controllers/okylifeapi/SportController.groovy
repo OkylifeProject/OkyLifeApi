@@ -29,6 +29,50 @@ class SportController {
         respond new Sport(params)
     }
 
+    def getSportActivitiesByUser(String email) {
+        EmailValidator emailValidator = EmailValidator.getInstance()
+        if (emailValidator.isValid(email)) {
+            def userInstance = User.findByEmail(email)
+            if (userInstance) {
+                def userActivities = Sport.findAllByUser(userInstance)
+                if (userActivities) {
+                    JSONArray jsonArray = new JSONArray()
+                    userActivities.each {
+                        JSONObject jsonObject = new JSONObject()
+                        jsonObject.put("id", it.getId())
+                        jsonObject.put("name", it.getName())
+                        jsonObject.put("description", it.getDescription())
+                        jsonObject.put("creationDate", it.creationDate)
+                        if (it.getStartLocation() != null) {
+                            Location location = it.getStartLocation()
+                            jsonObject.put("startLatitude", location.getLatitude())
+                            jsonObject.put("startLongitude", location.getLongitude())
+                        }
+                        jsonObject.put("type", it.type)
+                        jsonObject.put("duration", it.duration)
+                        jsonObject.put("distance", it.distance)
+                        jsonObject.put("velocity", it.velocity)
+                        jsonObject.put("rhythm", it.rhythm)
+                        jsonObject.put("targetDistance", it.targetDistance)
+                        jsonObject.put("hydration", it.hydration)
+                        jsonObject.put("locations", it.locations)
+                        jsonArray.put(jsonObject)
+                    }
+                    render jsonArray as JSON
+                } else {
+                    response.status = 404
+                    render "User doesnt have Activities"
+                }
+            } else {
+                response.status = 404
+                render "User doesnt exists"
+            }
+        } else {
+            response.status = 404
+            render "Invalid email"
+        }
+    }
+
     def createSportActivity(String email) {
         EmailValidator emailValidator = EmailValidator.getInstance()
         if (!emailValidator.isValid(email)) {
@@ -49,7 +93,7 @@ class SportController {
         }
         //TODO: Delete OkyBar from constructor
         def sportActivityInstance = new Sport(creationDate: format.parse(format.format(new Date())),
-                description: params.description, name: params.name, owner: userInstance, startLocation: startLocation,
+                description: params.description, name: params.name, user: userInstance, startLocation: startLocation,
                 type: params.type,
                 okiBar: new OkiBar())
         sportActivityInstance.save(flush: true)
@@ -59,40 +103,38 @@ class SportController {
             render "There are several data errors; please verify and re-send the information\n" + sportActivityInstance.errors.getAllErrors()
         }
     }
-    //TODO: agregar metodo para modificar campos especificos de sport
 
-    def getSportActivitiesByUser(String email) {
-        EmailValidator emailValidator = EmailValidator.getInstance()
-        if (emailValidator.isValid(email)) {
-            def userInstance = User.findByEmail(email)
-            if (userInstance) {
-                def userActivities = userInstance.getActivities()
-                if (userActivities) {
-                    JSONArray jsonArray = new JSONArray()
-                    userActivities.each {
-                        JSONObject jsonObject = new JSONObject()
-                        jsonObject.put("id", it.getId())
-                        jsonObject.put("name", it.getName())
-                        jsonObject.put("description", it.getDescription())
-                        if (it.getStartLocation() != null) {
-                            Location location = it.getStartLocation()
-                            jsonObject.put("startLatitude", location.getLatitude())
-                            jsonObject.put("startLongitude", location.getLongitude())
-                        }
-                        jsonArray.put(jsonObject)
-                    }
-                    render jsonArray as JSON
-                } else {
-                    response.status = 404
-                    render "User doesnt have Activities"
-                }
+    def setSportActivityFields(long sportActivityId) {
+        def sport = Sport.findById(sportActivityId)
+        if (sport) {
+            if (params.duration) {
+                sport.duration = Double.valueOf(params.duration)
+            }
+            if (params.distance) {
+                sport.distance = Double.valueOf(params.distance)
+            }
+            if (params.velocity) {
+                sport.velocity = Double.valueOf(params.velocity)
+            }
+            if (params.rhythm) {
+                sport.rhythm = Double.valueOf(params.rhythm)
+            }
+            if (params.targetDistance) {
+                sport.targetDistance = Double.valueOf(params.targetDistance)
+            }
+            if (params.hydration) {
+                sport.hydration = Double.valueOf(params.hydration)
+            }
+            sport.save(flush: true)
+            if (sport.hasErrors()) {
+                response.status = 505
+                render "Error at saving parameters; please check inputs"
             } else {
-                response.status = 404
-                render "User doesnt exists"
+                render "Success"
             }
         } else {
             response.status = 404
-            render "Invalid email"
+            render "Sport Activity Not Found"
         }
     }
 

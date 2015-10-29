@@ -1,15 +1,16 @@
 package okylifeapi
 
+import classes.Location
+
 class Activity {
 
     Date creationDate;
     String description;
     String name;
-    double[] location;
+    Location startLocation;
 
-    //TODO: delete OkyBar class
+    //TODO: delete OkyBar class and relation
     OkiBar okiBar;
-
     static hasOne = [okiBar: OkiBar]
 
     static constraints = {
@@ -17,7 +18,7 @@ class Activity {
         description nullable: true, blank: false
         name nullable: false, blank: false, unique: true
         okiBar unique: true, nullable: true
-        location nullable: true, size: 2
+        startLocation nullable: true
     }
 
     @Override
@@ -27,7 +28,7 @@ class Activity {
                 ", creationDate=" + creationDate +
                 ", description='" + description + '\'' +
                 ", name='" + name + '\'' +
-                ", location=" + Arrays.toString(location) +
+                ", startLocation=" + startLocation +
                 ", okiBar=" + okiBar +
                 ", version=" + version +
                 '}';

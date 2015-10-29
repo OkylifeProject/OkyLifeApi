@@ -1,5 +1,6 @@
 package okylifeapi
 
+import classes.Location
 import grails.converters.JSON
 import grails.transaction.Transactional
 import org.apache.commons.validator.routines.EmailValidator
@@ -42,14 +43,12 @@ class ActivityController {
             return
         }
         SimpleDateFormat format = new SimpleDateFormat("MM/dd/yy")
-        double location = null;
-        if (params.latitude && params.longitude) {
-            location = new double[2]
-            location[0] = params.latitude
-            location[1] = params.longitude
+        Location startLocation = null;
+        if (params.startLatitude && params.startLongitude) {
+            startLocation = new Location(Double.valueOf(params.startLatitude), Double.valueOf(params.startLongitude))
         }
         //TODO: Delete OkyBar from constructor
-        def activityInstance = new Activity(creationDate: format.parse(format.format(new Date())), description: params.description, name: params.name, owner: userInstance, location: location, okiBar: new OkiBar())
+        def activityInstance = new Activity(creationDate: format.parse(format.format(new Date())), description: params.description, name: params.name, owner: userInstance, startLocation: startLocation, okiBar: new OkiBar())
         activityInstance.save(flush: true)
         if (!activityInstance.hasErrors()) {
             render "Success"
@@ -74,10 +73,10 @@ class ActivityController {
                         jsonObject.put("activityType", it.getActivityType())
                         jsonObject.put("name", it.getName())
                         jsonObject.put("description", it.getDescription())
-                        if (it.getLocation() != null) {
-                            double location = it.getLocation()
-                            jsonObject.put("latitude", location[0])
-                            jsonObject.put("longitude", location[1])
+                        if (it.getStartLocation() != null) {
+                            Location location = it.getStartLocation()
+                            jsonObject.put("startLatitude", location.getLatitude())
+                            jsonObject.put("startLongitude", location.getLongitude())
                         }
                         jsonArray.put(jsonObject)
                     }

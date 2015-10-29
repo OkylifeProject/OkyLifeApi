@@ -41,12 +41,15 @@ class ActivityController {
             render "User doesnt exists"
             return
         }
-        if (Activity.findByName(params.name)) {
-            render "Activity name already in use"
-            return
-        }
         SimpleDateFormat format = new SimpleDateFormat("MM/dd/yy")
-        def activityInstance = new Activity(activityType: params.type, creationDate: format.parse(format.format(new Date())), description: params.description, name: params.name, owner: userInstance, okiBar: new OkiBar())
+        double location = null;
+        if (params.latitude && params.longitude) {
+            location = new double[2]
+            location[0] = params.latitude
+            location[1] = params.longitude
+        }
+        //TODO: Delete OkyBar from constructor
+        def activityInstance = new Activity(creationDate: format.parse(format.format(new Date())), description: params.description, name: params.name, owner: userInstance, location: location, okiBar: new OkiBar())
         activityInstance.save(flush: true)
         if (!activityInstance.hasErrors()) {
             render "Success"
@@ -71,6 +74,11 @@ class ActivityController {
                         jsonObject.put("activityType", it.getActivityType())
                         jsonObject.put("name", it.getName())
                         jsonObject.put("description", it.getDescription())
+                        if (it.getLocation() != null) {
+                            double location = it.getLocation()
+                            jsonObject.put("latitude", location[0])
+                            jsonObject.put("longitude", location[1])
+                        }
                         jsonArray.put(jsonObject)
                     }
                     render jsonArray as JSON

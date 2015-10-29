@@ -70,7 +70,6 @@ class ActivityController {
                     userActivities.each {
                         JSONObject jsonObject = new JSONObject()
                         jsonObject.put("id", it.getId())
-                        jsonObject.put("activityType", it.getActivityType())
                         jsonObject.put("name", it.getName())
                         jsonObject.put("description", it.getDescription())
                         if (it.getStartLocation() != null) {

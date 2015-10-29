@@ -12,6 +12,11 @@ class Activity {
     //TODO: delete OkyBar class and relation
     OkiBar okiBar;
     static hasOne = [okiBar: OkiBar]
+    static belongsTo = [user: User]
+
+    static mapping = {
+        tablePerHierarchy false
+    }
 
     static constraints = {
         creationDate nullable: false

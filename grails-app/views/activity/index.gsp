@@ -33,7 +33,9 @@
 						<th><g:message code="activity.okiBar.label" default="Oki Bar" /></th>
 					
 						<th><g:message code="activity.startLocation.label" default="Start Location" /></th>
-					
+
+						<th><g:message code="activity.user.label" default="User"/></th>
+
 					</tr>
 				</thead>
 				<tbody>
@@ -49,6 +51,8 @@
 						<td>${fieldValue(bean: activityInstance, field: "okiBar")}</td>
 					
 						<td>${fieldValue(bean: activityInstance, field: "startLocation")}</td>
+
+						<td>${fieldValue(bean: activityInstance, field: "user")}</td>
 					
 					</tr>
 				</g:each>

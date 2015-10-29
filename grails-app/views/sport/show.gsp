@@ -159,6 +159,16 @@
 			</li>
 		</g:if>
 
+		<g:if test="${sportInstance?.user}">
+			<li class="fieldcontain">
+				<span id="user-label" class="property-label"><g:message code="sport.user.label" default="User"/></span>
+
+				<span class="property-value" aria-labelledby="user-label"><g:link controller="user" action="show"
+																				  id="${sportInstance?.user?.id}">${sportInstance?.user?.encodeAsHTML()}</g:link></span>
+
+			</li>
+		</g:if>
+
 	</ol>
 	<g:form url="[resource: sportInstance, action: 'delete']" method="DELETE">
 		<fieldset class="buttons">

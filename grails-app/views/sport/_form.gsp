@@ -14,7 +14,7 @@
 <div class="fieldcontain ${hasErrors(bean: sportInstance, field: 'description', 'error')} ">
 	<label for="description">
 		<g:message code="sport.description.label" default="Description"/>
-
+		
 	</label>
 	<g:textField name="description" value="${sportInstance?.description}"/>
 
@@ -32,7 +32,7 @@
 <div class="fieldcontain ${hasErrors(bean: sportInstance, field: 'okiBar', 'error')} ">
 	<label for="okiBar">
 		<g:message code="sport.okiBar.label" default="Oki Bar"/>
-
+		
 	</label>
 	<g:select id="okiBar" name="okiBar.id" from="${okylifeapi.OkiBar.list()}" optionKey="id"
 			  value="${sportInstance?.okiBar?.id}" class="many-to-one" noSelection="['null': '']"/>
@@ -42,7 +42,7 @@
 <div class="fieldcontain ${hasErrors(bean: sportInstance, field: 'startLocation', 'error')} ">
 	<label for="startLocation">
 		<g:message code="sport.startLocation.label" default="Start Location"/>
-
+		
 	</label>
 	<g:select id="startLocation" name="startLocation.id" from="${classes.Location.list()}" optionKey="id"
 			  value="${sportInstance?.startLocation?.id}" class="many-to-one" noSelection="['null': '']"/>
@@ -108,7 +108,18 @@
 		<g:message code="sport.type.label" default="Type"/>
 		<span class="required-indicator">*</span>
 	</label>
-	<g:textField name="type" required="" value="${sportInstance?.type}"/>
+	<g:select name="type" from="${sportInstance.constraints.type.inList}" required="" value="${sportInstance?.type}"
+			  valueMessagePrefix="sport.type"/>
+
+</div>
+
+<div class="fieldcontain ${hasErrors(bean: sportInstance, field: 'user', 'error')} required">
+	<label for="user">
+		<g:message code="sport.user.label" default="User"/>
+		<span class="required-indicator">*</span>
+	</label>
+	<g:select id="user" name="user.id" from="${okylifeapi.User.list()}" optionKey="id" required=""
+			  value="${sportInstance?.user?.id}" class="many-to-one"/>
 
 </div>
 

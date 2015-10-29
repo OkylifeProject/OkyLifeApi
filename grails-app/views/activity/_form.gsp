@@ -47,3 +47,13 @@
 
 </div>
 
+<div class="fieldcontain ${hasErrors(bean: activityInstance, field: 'user', 'error')} required">
+	<label for="user">
+		<g:message code="activity.user.label" default="User"/>
+		<span class="required-indicator">*</span>
+	</label>
+	<g:select id="user" name="user.id" from="${okylifeapi.User.list()}" optionKey="id" required=""
+			  value="${activityInstance?.user?.id}" class="many-to-one"/>
+
+</div>
+

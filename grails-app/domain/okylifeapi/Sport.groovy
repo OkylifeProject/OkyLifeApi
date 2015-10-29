@@ -11,10 +11,7 @@ class Sport extends Activity {
     double targetDistance
     double hydration
     ArrayList<Location> locations
-
-    Sport() {
-        locations = new ArrayList<Location>()
-    }
+    
     static constraints = {
         hydration min: (double) 0
         duration min: (double) 0
@@ -22,5 +19,6 @@ class Sport extends Activity {
         velocity min: (double) 0
         distance min: (double) 0
         targetDistance min: (double) 0
+        type inList: ["Correr", "Ciclismo", "Caminar"]
     }
 }

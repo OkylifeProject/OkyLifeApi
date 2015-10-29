@@ -67,6 +67,18 @@
 					
 				</li>
 				</g:if>
+
+				<g:if test="${activityInstance?.user}">
+					<li class="fieldcontain">
+						<span id="user-label" class="property-label"><g:message code="activity.user.label"
+																				default="User"/></span>
+
+						<span class="property-value" aria-labelledby="user-label"><g:link controller="user"
+																						  action="show"
+																						  id="${activityInstance?.user?.id}">${activityInstance?.user?.encodeAsHTML()}</g:link></span>
+
+					</li>
+				</g:if>
 			
 			</ol>
 			<g:form url="[resource:activityInstance, action:'delete']" method="DELETE">

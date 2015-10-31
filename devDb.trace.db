@@ -1,0 +1,27 @@
+10-31 16:43:55 jdbc[12]: exception
+org.h2.jdbc.JdbcSQLException: Table "ACTIVITY" not found; SQL statement:
+alter table activity drop constraint FK_diwfgyhcm1yt2d0o6jr9j3hrm if exists [42102-176]
+10-31 16:43:55 jdbc[12]: exception
+org.h2.jdbc.JdbcSQLException: Table "LOCATION" not found; SQL statement:
+alter table location drop constraint FK_kj3y2f6x3ydy3g05nivbnahbe if exists [42102-176]
+10-31 16:43:55 jdbc[12]: exception
+org.h2.jdbc.JdbcSQLException: Table "MESSAGE" not found; SQL statement:
+alter table message drop constraint FK_60b0338jqfujfk48rlpwro1cj if exists [42102-176]
+10-31 16:43:55 jdbc[12]: exception
+org.h2.jdbc.JdbcSQLException: Table "MESSAGE" not found; SQL statement:
+alter table message drop constraint FK_rnac8gw6m9nsfhpae2jvj5c5q if exists [42102-176]
+10-31 16:43:55 jdbc[12]: exception
+org.h2.jdbc.JdbcSQLException: Table "NOTE" not found; SQL statement:
+alter table note drop constraint FK_bul4ckelao1p4hfuuqjq3ns40 if exists [42102-176]
+10-31 16:43:55 jdbc[12]: exception
+org.h2.jdbc.JdbcSQLException: Table "OKI_BAR" not found; SQL statement:
+alter table oki_bar drop constraint FK_151r5uxutgxvi5kr6sho30xs0 if exists [42102-176]
+10-31 16:43:55 jdbc[12]: exception
+org.h2.jdbc.JdbcSQLException: Table "SPORT" not found; SQL statement:
+alter table sport drop constraint FK_dprd8v4jsggbkk3k5fpbnf6r if exists [42102-176]
+10-31 16:43:55 jdbc[12]: exception
+org.h2.jdbc.JdbcSQLException: Table "USER_USER" not found; SQL statement:
+alter table user_user drop constraint FK_s7pwk9swjfqs0w7ub9tt5s47y if exists [42102-176]
+10-31 16:43:55 jdbc[12]: exception
+org.h2.jdbc.JdbcSQLException: Table "USER_USER" not found; SQL statement:
+alter table user_user drop constraint FK_mkovi37gqcn1a59q0qylfi1ef if exists [42102-176]

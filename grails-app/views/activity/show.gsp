@@ -58,12 +58,17 @@
 					
 				</li>
 				</g:if>
-			
-				<g:if test="${activityInstance?.startLocation}">
+
+				<g:if test="${activityInstance?.locations}">
 				<li class="fieldcontain">
-					<span id="startLocation-label" class="property-label"><g:message code="activity.startLocation.label" default="Start Location" /></span>
-					
-						<span class="property-value" aria-labelledby="startLocation-label"><g:link controller="location" action="show" id="${activityInstance?.startLocation?.id}">${activityInstance?.startLocation?.encodeAsHTML()}</g:link></span>
+					<span id="locations-label" class="property-label"><g:message code="activity.locations.label"
+																				 default="Locations"/></span>
+
+					<g:each in="${activityInstance.locations}" var="l">
+						<span class="property-value" aria-labelledby="locations-label"><g:link controller="location"
+																							   action="show"
+																							   id="${l.id}">${l?.encodeAsHTML()}</g:link></span>
+					</g:each>
 					
 				</li>
 				</g:if>

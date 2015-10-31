@@ -38,12 +38,22 @@
 
 </div>
 
-<div class="fieldcontain ${hasErrors(bean: activityInstance, field: 'startLocation', 'error')} ">
-	<label for="startLocation">
-		<g:message code="activity.startLocation.label" default="Start Location" />
+<div class="fieldcontain ${hasErrors(bean: activityInstance, field: 'locations', 'error')} ">
+	<label for="locations">
+		<g:message code="activity.locations.label" default="Locations"/>
 		
 	</label>
-	<g:select id="startLocation" name="startLocation.id" from="${classes.Location.list()}" optionKey="id" value="${activityInstance?.startLocation?.id}" class="many-to-one" noSelection="['null': '']"/>
+
+	<ul class="one-to-many">
+		<g:each in="${activityInstance?.locations ?}" var="l">
+			<li><g:link controller="location" action="show" id="${l.id}">${l?.encodeAsHTML()}</g:link></li>
+		</g:each>
+		<li class="add">
+			<g:link controller="location" action="create"
+					params="['activity.id': activityInstance?.id]">${message(code: 'default.add.label', args: [message(code: 'location.label', default: 'Location')])}</g:link>
+		</li>
+	</ul>
+
 
 </div>
 

@@ -1,6 +1,5 @@
 package okylifeapi
 
-import classes.Location
 import grails.converters.JSON
 import grails.transaction.Transactional
 import org.apache.commons.validator.routines.EmailValidator

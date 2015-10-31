@@ -1,18 +1,16 @@
 package okylifeapi
 
-import classes.Location
-
 class Activity {
 
     Date creationDate;
     String description;
     String name;
-    Location startLocation;
 
     //TODO: delete OkyBar class and relation
     OkiBar okiBar;
     static hasOne = [okiBar: OkiBar]
     static belongsTo = [user: User]
+    static hasMany = [locations: Location]
 
     static mapping = {
         tablePerHierarchy false
@@ -23,6 +21,6 @@ class Activity {
         description nullable: true, blank: false
         name nullable: false, blank: false
         okiBar unique: true, nullable: true
-        startLocation nullable: true
+        locations nullable: true
     }
 }

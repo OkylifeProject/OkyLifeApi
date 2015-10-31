@@ -1,6 +1,5 @@
 package okylifeapi
 
-import classes.Location
 import grails.converters.JSON
 import grails.transaction.Transactional
 import org.apache.commons.validator.routines.EmailValidator
@@ -43,23 +42,21 @@ class ActivityController {
             return
         }
         SimpleDateFormat format = new SimpleDateFormat("MM/dd/yy")
-        Location startLocation = null;
-        if (params.startLatitude && params.startLongitude) {
-            startLocation = new Location(Double.valueOf(params.startLongitude), Double.valueOf(params.startLatitude))
-        }
         //TODO: Delete OkyBar from constructor
-        def activityInstance = new Activity(creationDate: format.parse(format.format(new Date())), description: params.description, name: params.name, user: userInstance, startLocation: startLocation, okiBar: new OkiBar())
+        def activityInstance = new Activity(creationDate: format.parse(format.format(new Date())), description: params.description, name: params.name, user: userInstance, okiBar: new OkiBar())
         activityInstance.save(flush: true)
         if (!activityInstance.hasErrors()) {
+            if (params.longitude && params.latitude) {
+                def location = new Location(longitude: Double.valueOf(params.longitude), latitude: Double.valueOf(params.latitude), activity: activityInstance)
+                location.save(flush: true)
+            }
             render "Success"
         } else if (activityInstance.hasErrors()) {
-            render "There are several data errors; please verify and re-send the information\n" + activityInstance.errors.getAllErrors().collect() {
-                it.defaultMessage
-            }
+            render "There are several data errors; please verify and re-send the information\n" + activityInstance.errors.getAllErrors()
         }
     }
 
-    def getActivitiesByUser(String email) {
+    def getUserActivities(String email) {
         EmailValidator emailValidator = EmailValidator.getInstance()
         if (emailValidator.isValid(email)) {
             def userInstance = User.findByEmail(email)
@@ -69,15 +66,11 @@ class ActivityController {
                     JSONArray jsonArray = new JSONArray()
                     userActivities.each {
                         JSONObject jsonObject = new JSONObject()
+                        JSONArray jsonLocations = new JSONArray()
                         jsonObject.put("id", it.getId())
                         jsonObject.put("name", it.getName())
                         jsonObject.put("description", it.getDescription())
                         jsonObject.put("creationDate", it.creationDate)
-                        if (it.getStartLocation() != null) {
-                            Location location = it.getStartLocation()
-                            jsonObject.put("startLatitude", location.getLatitude())
-                            jsonObject.put("startLongitude", location.getLongitude())
-                        }
                         jsonArray.put(jsonObject)
                     }
                     render jsonArray as JSON
@@ -92,6 +85,51 @@ class ActivityController {
         } else {
             response.status = 404
             render "Invalid email"
+        }
+    }
+
+    def getActivityLocations(long activityId) {
+        def activityInstance = Activity.get(activityId)
+        if (activityInstance) {
+            def locations = activityInstance.getLocations()
+            if (locations != [] && locations != null) {
+                JSONArray jsonLocations = new JSONArray()
+                locations.each {
+                    JSONObject jsonLocation = new JSONObject()
+                    jsonLocation.put("latitude", it.getLatitude())
+                    jsonLocation.put("longitude", it.getLongitude())
+                    jsonLocations.put(jsonLocation)
+                }
+                render jsonLocations as JSON
+            } else {
+                response.status = 404
+                render "Locations Not Found"
+            }
+        } else {
+            response.status = 404
+            render "Activity Not Found"
+        }
+    }
+
+    def addLocation(long activityId, String locations) {
+        JSONObject jsonLocations = new JSONObject(locations)
+        if (locations) {
+            def activityInstance = Activity.get(Long.valueOf(activityId))
+            if (activityInstance) {
+                def location = new Location(longitude: Double.valueOf(jsonLocations.get("longitude")), latitude: Double.valueOf(jsonLocations.get("latitude")), activity: activityInstance)
+                location.save(flush: true)
+                if (!location.hasErrors()) {
+                    render "Success"
+                } else {
+                    render location.getErrors().getAllErrors()
+                }
+            } else {
+                response.status = 404
+                render "Activity Not found"
+            }
+        } else {
+            response.status = 505
+            render "Invalid Data Received"
         }
     }
 

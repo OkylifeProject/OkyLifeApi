@@ -31,8 +31,6 @@
 						<g:sortableColumn property="name" title="${message(code: 'activity.name.label', default: 'Name')}" />
 					
 						<th><g:message code="activity.okiBar.label" default="Oki Bar" /></th>
-					
-						<th><g:message code="activity.startLocation.label" default="Start Location" /></th>
 
 						<th><g:message code="activity.user.label" default="User"/></th>
 
@@ -50,8 +48,6 @@
 					
 						<td>${fieldValue(bean: activityInstance, field: "okiBar")}</td>
 					
-						<td>${fieldValue(bean: activityInstance, field: "startLocation")}</td>
-
 						<td>${fieldValue(bean: activityInstance, field: "user")}</td>
 					
 					</tr>

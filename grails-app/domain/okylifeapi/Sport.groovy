@@ -1,7 +1,5 @@
 package okylifeapi
 
-import classes.Location
-
 class Sport extends Activity {
     String type
     double duration
@@ -10,7 +8,6 @@ class Sport extends Activity {
     double rhythm
     double targetDistance
     double hydration
-    ArrayList<Location> locations
 
     static constraints = {
         hydration min: (double) 0

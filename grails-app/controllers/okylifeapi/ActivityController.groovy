@@ -111,17 +111,17 @@ class ActivityController {
         }
     }
 
-    def addLocation(long activityId, String locations) {
+    def addLocation(long activityId, String location) {
         JSONObject jsonLocations = new JSONObject(locations)
-        if (locations) {
+        if (location) {
             def activityInstance = Activity.get(Long.valueOf(activityId))
             if (activityInstance) {
-                def location = new Location(longitude: Double.valueOf(jsonLocations.get("longitude")), latitude: Double.valueOf(jsonLocations.get("latitude")), activity: activityInstance)
-                location.save(flush: true)
-                if (!location.hasErrors()) {
+                def locationInstance = new Location(longitude: Double.valueOf(jsonLocations.get("longitude")), latitude: Double.valueOf(jsonLocations.get("latitude")), activity: activityInstance)
+                locationInstance.save(flush: true)
+                if (!locationInstance.hasErrors()) {
                     render "Success"
                 } else {
-                    render location.getErrors().getAllErrors()
+                    render locationInstance.getErrors().getAllErrors()
                 }
             } else {
                 response.status = 404
@@ -132,6 +132,7 @@ class ActivityController {
             render "Invalid Data Received"
         }
     }
+
 
     @Transactional
     def save(Activity activityInstance) {

@@ -95,6 +95,7 @@ class SportController {
         def sportActivityInstance = new Sport(creationDate: format.parse(format.format(new Date())),
                 description: params.description, name: params.name, user: userInstance, startLocation: startLocation,
                 type: params.type,
+                locations: new ArrayList<Location>(),
                 okiBar: new OkiBar())
         sportActivityInstance.save(flush: true)
         if (!sportActivityInstance.hasErrors()) {

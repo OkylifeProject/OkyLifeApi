@@ -19,6 +19,6 @@ class Sport extends Activity {
         velocity min: (double) 0
         distance min: (double) 0
         targetDistance min: (double) 0
-        type inList: ["Correr", "Ciclismo", "Caminar"]
+        type inList: ["Run", "Biking", "Walk"]
     }
 }

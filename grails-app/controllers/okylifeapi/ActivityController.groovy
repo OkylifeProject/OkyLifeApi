@@ -45,7 +45,7 @@ class ActivityController {
         SimpleDateFormat format = new SimpleDateFormat("MM/dd/yy")
         Location startLocation = null;
         if (params.startLatitude && params.startLongitude) {
-            startLocation = new Location(Double.valueOf(params.startLatitude), Double.valueOf(params.startLongitude))
+            startLocation = new Location(Double.valueOf(params.startLongitude), Double.valueOf(params.startLatitude))
         }
         //TODO: Delete OkyBar from constructor
         def activityInstance = new Activity(creationDate: format.parse(format.format(new Date())), description: params.description, name: params.name, user: userInstance, startLocation: startLocation, okiBar: new OkiBar())

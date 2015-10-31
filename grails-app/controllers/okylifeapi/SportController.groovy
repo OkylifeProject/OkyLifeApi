@@ -89,7 +89,7 @@ class SportController {
         SimpleDateFormat format = new SimpleDateFormat("MM/dd/yy")
         Location startLocation = null;
         if (params.startLatitude && params.startLongitude) {
-            startLocation = new Location(Double.valueOf(params.startLatitude), Double.valueOf(params.startLongitude))
+            startLocation = new Location(Double.valueOf(params.startLongitude), Double.valueOf(params.startLatitude))
         }
         //TODO: Delete OkyBar from constructor
         def sportActivityInstance = new Sport(creationDate: format.parse(format.format(new Date())),

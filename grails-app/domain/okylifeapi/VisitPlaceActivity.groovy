@@ -6,5 +6,7 @@ class VisitPlaceActivity extends Activity {
     String type
     static constraints = {
         distance min: (double) 0
+        type nullable: true
+        address nullable: true
     }
 }

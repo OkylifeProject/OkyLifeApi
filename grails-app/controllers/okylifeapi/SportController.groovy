@@ -42,11 +42,6 @@ class SportController {
                         jsonObject.put("name", it.getName())
                         jsonObject.put("description", it.getDescription())
                         jsonObject.put("creationDate", it.creationDate)
-                        if (it.getStartLocation() != null) {
-                            Location location = it.getStartLocation()
-                            jsonObject.put("startLatitude", location.getLatitude())
-                            jsonObject.put("startLongitude", location.getLongitude())
-                        }
                         jsonObject.put("type", it.type)
                         jsonObject.put("duration", it.duration)
                         jsonObject.put("distance", it.distance)
@@ -86,21 +81,17 @@ class SportController {
             return
         }
         SimpleDateFormat format = new SimpleDateFormat("MM/dd/yy")
-        Location startLocation = null;
-        if (params.startLatitude && params.startLongitude) {
-            startLocation = new Location(Double.valueOf(params.startLongitude), Double.valueOf(params.startLatitude))
-        }
         //TODO: Delete OkyBar from constructor
-        def sportActivityInstance = new Sport(creationDate: format.parse(format.format(new Date())),
-                description: params.description, name: params.name, user: userInstance, startLocation: startLocation,
-                type: params.type,
-                locations: new ArrayList<Location>(),
-                okiBar: new OkiBar())
-        sportActivityInstance.save(flush: true)
-        if (!sportActivityInstance.hasErrors()) {
+        def sport = new Sport(creationDate: format.parse(format.format(new Date())), description: params.description, name: params.name, user: userInstance, type: params.type, okiBar: new OkiBar())
+        sport.save(flush: true)
+        if (!sport.hasErrors()) {
+            if (params.longitude && params.latitude) {
+                def location = new Location(longitude: Double.valueOf(params.longitude), latitude: Double.valueOf(params.latitude), activity: sport)
+                location.save(flush: true)
+            }
             render "Success"
-        } else if (sportActivityInstance.hasErrors()) {
-            render "There are several data errors; please verify and re-send the information\n" + sportActivityInstance.errors.getAllErrors()
+        } else if (sport.hasErrors()) {
+            render "There are several data errors; please verify and re-send the information\n" + sport.errors.getAllErrors()
         }
     }
 

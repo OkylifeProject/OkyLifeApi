@@ -6,6 +6,8 @@ import org.apache.commons.validator.routines.EmailValidator
 import org.codehaus.groovy.grails.web.json.JSONArray
 import org.codehaus.groovy.grails.web.json.JSONObject
 
+import java.text.SimpleDateFormat
+
 import static org.springframework.http.HttpStatus.*
 
 @Transactional(readOnly = true)
@@ -60,6 +62,65 @@ class EatActivityController {
         } else {
             response.status = 404
             render "Invalid email"
+        }
+    }
+
+    def createEatActivity(String email) {
+        EmailValidator emailValidator = EmailValidator.getInstance()
+        if (!emailValidator.isValid(email)) {
+            response.status = 404
+            render "Invalid Email"
+            return
+        }
+        def userInstance = User.findByEmail(email)
+        if (!userInstance) {
+            response.status = 404
+            render "User doesnt exists"
+            return
+        }
+        SimpleDateFormat format = new SimpleDateFormat("MM/dd/yy")
+        //TODO: Delete OkyBar from constructor
+        def eatActivity = new EatActivity(creationDate: format.parse(format.format(new Date())), description: params.description, name: params.name, user: userInstance, type: params.type, okiBar: new OkiBar())
+        eatActivity.save(flush: true)
+        if (!eatActivity.hasErrors()) {
+            if (params.longitude && params.latitude) {
+                def location = new Location(longitude: Double.valueOf(params.longitude), latitude: Double.valueOf(params.latitude), activity: eatActivity)
+                location.save(flush: true)
+            }
+            render "Success"
+        } else if (eatActivity.hasErrors()) {
+            render "There are several data errors; please verify and re-send the information\n" + eatActivity.errors.getAllErrors()
+        }
+    }
+
+    def setEatActivityFields(long eatActivityId) {
+        def eatActivity = EatActivity.findById(eatActivityId)
+        if (eatActivity) {
+            if (params.portionSize) {
+                eatActivity.portionSize = Double.valueOf(params.portionSize)
+            }
+            if (params.totalCarbohydrates) {
+                eatActivity.totalCarbohydrates = Double.valueOf(params.totalCarbohydrates)
+            }
+            if (params.totalFat) {
+                eatActivity.totalFat = Double.valueOf(params.totalFat)
+            }
+            if (params.totalPortions) {
+                eatActivity.totalPortions = Double.valueOf(params.totalPortions)
+            }
+            if (params.totalProteins) {
+                eatActivity.totalProteins = Double.valueOf(params.totalProteins)
+            }
+            eatActivity.save(flush: true)
+            if (eatActivity.hasErrors()) {
+                response.status = 505
+                render "Error at saving parameters; please check inputs"
+            } else {
+                render "Success"
+            }
+        } else {
+            response.status = 404
+            render "EatActivity Activity Not Found"
         }
     }
 

@@ -92,7 +92,7 @@ class ActivityController {
         def activityInstance = Activity.get(activityId)
         if (activityInstance) {
             def locations = activityInstance.getLocations()
-            if (locations != [] && locations != null) {
+            if (!locations.isEmpty() && locations != null) {
                 JSONArray jsonLocations = new JSONArray()
                 locations.each {
                     JSONObject jsonLocation = new JSONObject()

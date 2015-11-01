@@ -68,9 +68,9 @@ class EatActivityController {
     def getEatActivityIngredients(long eatActivityId) {
         def eatActivity = EatActivity.get(eatActivityId)
         if (eatActivity) {
-            JSONArray jsonIngredients = new JSONArray()
             def ingredients = eatActivity.getIngredients()
-            if (ingredients != [] && ingredients != null) {
+            if (!ingredients.isEmpty() && ingredients != null) {
+                JSONArray jsonIngredients = new JSONArray()
                 ingredients.each {
                     JSONObject jsonIngredient = new JSONObject()
                     jsonIngredient.put("name", it.name)

@@ -10,7 +10,7 @@ import java.text.SimpleDateFormat
 
 import static org.springframework.http.HttpStatus.*
 
-@Transactional(readOnly = true)
+@Transactional(readOnly = false)
 class EatActivityController {
 
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
@@ -73,7 +73,13 @@ class EatActivityController {
             if (ingredients != [] && ingredients != null) {
                 ingredients.each {
                     JSONObject jsonIngredient = new JSONObject()
-                    jsonIngredient.put("name", it.toString())
+                    jsonIngredient.put("name", it.name)
+                    jsonIngredient.put("brand", it.brand)
+                    jsonIngredient.put("description", it.description)
+                    jsonIngredient.put("number", it.number)
+                    jsonIngredient.put("carbohydrates", it.carbohydrates)
+                    jsonIngredient.put("fat", it.fat)
+                    jsonIngredient.put("proteins", it.proteins)
                     jsonIngredients.put(jsonIngredient)
                 }
                 render jsonIngredients as JSON
@@ -146,36 +152,22 @@ class EatActivityController {
         }
     }
 
-    def addIngredientSet(long eatActivityId, String ingredientSet) {
-        JSONObject jsonObject
-        JSONArray ingredients
-        try {
-            jsonObject = new JSONObject(ingredientSet)
-            ingredients = jsonObject.getJSONArray("ingredients")
-        } catch (Exception e) {
-            response.status = 505
-            render "Fatal Error: Invalid Data Array: " + jsonObject.toString()
-            return
-        }
-
-        def activityInstance = EatActivity.get(eatActivityId)
-        if (activityInstance) {
-            if (!ingredients.isEmpty()) {
-                ingredients.each {
-                    activityInstance.ingredients.add(it.getAt("name"))
-                    activityInstance.save(flush: true)
-                    if (activityInstance.hasErrors()) {
-                        render activityInstance.getErrors().getAllErrors()
-                        return
-                    }
-                }
+    def addIngredient(long eatActivityId) {
+        def eatActivity = EatActivity.findById(eatActivityId)
+        if (eatActivity) {
+            def ingredient = new Ingredient(name: params.name, description: params.description,
+                    number: Double.valueOf(params.number), brand: params.brand, fat: Double.valueOf(params.fat),
+                    carbohydrates: Double.valueOf(params.carbohydrates), proteins: Double.valueOf(params.proteins), eatActivity: eatActivity)
+            ingredient.save(flush: true)
+            if (!ingredient.hasErrors()) {
                 render "Success"
             } else {
-                render "There are not ingredients"
+                response.status = 505
+                render ingredient.getErrors().getAllErrors()
             }
         } else {
             response.status = 404
-            render "Eat Activity Not Found"
+            render "EatActivity Activity Not Found"
         }
     }
 

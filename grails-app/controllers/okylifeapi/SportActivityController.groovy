@@ -80,8 +80,7 @@ class SportActivityController {
             return
         }
         SimpleDateFormat format = new SimpleDateFormat("MM/dd/yy")
-        //TODO: Delete OkyBar from constructor
-        def sport = new SportActivity(creationDate: format.parse(format.format(new Date())), description: params.description, name: params.name, user: userInstance, type: params.type, okiBar: new OkiBar())
+        def sport = new SportActivity(creationDate: format.parse(format.format(new Date())), description: params.description, name: params.name, user: userInstance, type: params.type)
         sport.save(flush: true)
         if (!sport.hasErrors()) {
             if (params.longitude && params.latitude) {

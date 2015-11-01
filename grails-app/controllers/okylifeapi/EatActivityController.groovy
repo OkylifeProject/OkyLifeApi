@@ -107,8 +107,7 @@ class EatActivityController {
             return
         }
         SimpleDateFormat format = new SimpleDateFormat("MM/dd/yy")
-        //TODO: Delete OkyBar from constructor
-        def eatActivity = new EatActivity(creationDate: format.parse(format.format(new Date())), description: params.description, name: params.name, user: userInstance, type: params.type, okiBar: new OkiBar())
+        def eatActivity = new EatActivity(creationDate: format.parse(format.format(new Date())), description: params.description, name: params.name, user: userInstance, type: params.type)
         eatActivity.save(flush: true)
         if (!eatActivity.hasErrors()) {
             if (params.longitude && params.latitude) {

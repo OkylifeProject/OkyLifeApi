@@ -29,15 +29,6 @@
 
 </div>
 
-<div class="fieldcontain ${hasErrors(bean: activityInstance, field: 'okiBar', 'error')} ">
-	<label for="okiBar">
-		<g:message code="activity.okiBar.label" default="Oki Bar" />
-		
-	</label>
-	<g:select id="okiBar" name="okiBar.id" from="${okylifeapi.OkiBar.list()}" optionKey="id" value="${activityInstance?.okiBar?.id}" class="many-to-one" noSelection="['null': '']"/>
-
-</div>
-
 <div class="fieldcontain ${hasErrors(bean: activityInstance, field: 'locations', 'error')} ">
 	<label for="locations">
 		<g:message code="activity.locations.label" default="Locations"/>

@@ -76,8 +76,7 @@ class VisitPlaceActivityController {
             return
         }
         SimpleDateFormat format = new SimpleDateFormat("MM/dd/yy")
-        //TODO: Delete OkyBar from constructor
-        def visitPlace = new VisitPlaceActivity(creationDate: format.parse(format.format(new Date())), description: params.description, name: params.name, user: userInstance, okiBar: new OkiBar())
+        def visitPlace = new VisitPlaceActivity(creationDate: format.parse(format.format(new Date())), description: params.description, name: params.name, user: userInstance)
         visitPlace.save(flush: true)
         if (!visitPlace.hasErrors()) {
             if (params.longitude && params.latitude) {

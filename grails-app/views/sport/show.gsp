@@ -71,14 +71,16 @@
 			</li>
 		</g:if>
 
-		<g:if test="${sportInstance?.startLocation}">
+		<g:if test="${sportInstance?.locations}">
 			<li class="fieldcontain">
-				<span id="startLocation-label" class="property-label"><g:message code="sport.startLocation.label"
-																				 default="Start Location"/></span>
+				<span id="locations-label" class="property-label"><g:message code="sport.locations.label"
+																			 default="Locations"/></span>
 
-				<span class="property-value" aria-labelledby="startLocation-label"><g:link controller="location"
+				<g:each in="${sportInstance.locations}" var="l">
+					<span class="property-value" aria-labelledby="locations-label"><g:link controller="location"
 																						   action="show"
-																						   id="${sportInstance?.startLocation?.id}">${sportInstance?.startLocation?.encodeAsHTML()}</g:link></span>
+																						   id="${l.id}">${l?.encodeAsHTML()}</g:link></span>
+				</g:each>
 
 			</li>
 		</g:if>

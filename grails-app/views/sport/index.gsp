@@ -39,10 +39,11 @@
 
 			<th><g:message code="sport.okiBar.label" default="Oki Bar"/></th>
 
-			<th><g:message code="sport.startLocation.label" default="Start Location"/></th>
-
 			<g:sortableColumn property="hydration"
 							  title="${message(code: 'sport.hydration.label', default: 'Hydration')}"/>
+
+			<g:sortableColumn property="duration"
+							  title="${message(code: 'sport.duration.label', default: 'Duration')}"/>
 
 		</tr>
 		</thead>
@@ -59,9 +60,9 @@
 
 				<td>${fieldValue(bean: sportInstance, field: "okiBar")}</td>
 
-				<td>${fieldValue(bean: sportInstance, field: "startLocation")}</td>
-
 				<td>${fieldValue(bean: sportInstance, field: "hydration")}</td>
+
+				<td>${fieldValue(bean: sportInstance, field: "duration")}</td>
 
 			</tr>
 		</g:each>

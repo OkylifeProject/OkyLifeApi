@@ -49,7 +49,6 @@ class SportActivityController {
                         jsonObject.put("rhythm", it.rhythm)
                         jsonObject.put("targetDistance", it.targetDistance)
                         jsonObject.put("hydration", it.hydration)
-                        jsonObject.put("locations", it.locations)
                         jsonArray.put(jsonObject)
                     }
                     render jsonArray as JSON
@@ -128,6 +127,7 @@ class SportActivityController {
             render "SportActivity Activity Not Found"
         }
     }
+
     @Transactional
     def save(SportActivity sportActivityInstance) {
         if (sportActivityInstance == null) {

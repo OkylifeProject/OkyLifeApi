@@ -116,7 +116,8 @@ class ActivityController {
         if (location) {
             def activityInstance = Activity.get(Long.valueOf(activityId))
             if (activityInstance) {
-                def locationInstance = new Location(longitude: Double.valueOf(jsonLocations.get("longitude")), latitude: Double.valueOf(jsonLocations.get("latitude")), activity: activityInstance)
+                def locationInstance = new Location(longitude: Double.valueOf(jsonLocations.get("longitude")),
+                        latitude: Double.valueOf(jsonLocations.get("latitude")), activity: activityInstance)
                 locationInstance.save(flush: true)
                 if (!locationInstance.hasErrors()) {
                     render "Success"
@@ -130,6 +131,40 @@ class ActivityController {
         } else {
             response.status = 505
             render "Invalid Data Received"
+        }
+    }
+
+    def addLocationSet(String locationSet, long activityId) {
+        JSONObject jsonObject
+        JSONArray locations
+        try {
+            jsonObject = new JSONObject(locationSet)
+            locations = jsonObject.getJSONArray("locations")
+        } catch (Exception e) {
+            response.status = 505
+            render "Fatal Error: Invalid Data Array: " + jsonObject.toString()
+            return
+        }
+
+        def activityInstance = Activity.get(activityId)
+        if (activityInstance) {
+            if (!locations.isEmpty()) {
+                locations.each {
+                    def locationInstance = new Location(activity: activityInstance,
+                            longitude: it.getAt("longitude"), latitude: it.getAt("latitude"))
+                    locationInstance.save(flush: true)
+                    if (locationInstance.hasErrors()) {
+                        render locationInstance.getErrors().getAllErrors()
+                        return
+                    }
+                }
+                render "Success"
+            } else {
+                render "There are not locations"
+            }
+        } else {
+            response.status = 404
+            render "Activity Not Found"
         }
     }
 

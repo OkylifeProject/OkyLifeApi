@@ -4,9 +4,9 @@ import grails.test.mixin.Mock
 import grails.test.mixin.TestFor
 import spock.lang.Specification
 
-@TestFor(SportController)
+@TestFor(SportActivityController)
 @Mock(SportActivity)
-class SportControllerSpec extends Specification {
+class SportActivityControllerSpec extends Specification {
 
     def populateValidParams(params) {
         assert params != null
@@ -20,8 +20,8 @@ class SportControllerSpec extends Specification {
         controller.index()
 
         then: "The model is correct"
-        !model.sportInstanceList
-        model.sportInstanceCount == 0
+        !model.sportActivityInstanceList
+        model.sportActivityInstanceCount == 0
     }
 
     void "Test the create action returns the correct model"() {
@@ -29,7 +29,7 @@ class SportControllerSpec extends Specification {
         controller.create()
 
         then: "The model is correctly created"
-        model.sportInstance != null
+        model.sportActivityInstance != null
     }
 
     void "Test the save action correctly persists an instance"() {
@@ -37,23 +37,23 @@ class SportControllerSpec extends Specification {
         when: "The save action is executed with an invalid instance"
         request.contentType = FORM_CONTENT_TYPE
         request.method = 'POST'
-        def sport = new SportActivity()
-        sport.validate()
-        controller.save(sport)
+        def sportActivity = new SportActivity()
+        sportActivity.validate()
+        controller.save(sportActivity)
 
         then: "The create view is rendered again with the correct model"
-        model.sportInstance != null
+        model.sportActivityInstance != null
         view == 'create'
 
         when: "The save action is executed with a valid instance"
         response.reset()
         populateValidParams(params)
-        sport = new SportActivity(params)
+        sportActivity = new SportActivity(params)
 
-        controller.save(sport)
+        controller.save(sportActivity)
 
         then: "A redirect is issued to the show action"
-        response.redirectedUrl == '/sport/show/1'
+        response.redirectedUrl == '/sportActivity/show/1'
         controller.flash.message != null
         SportActivity.count() == 1
     }
@@ -67,11 +67,11 @@ class SportControllerSpec extends Specification {
 
         when: "A domain instance is passed to the show action"
         populateValidParams(params)
-        def sport = new SportActivity(params)
-        controller.show(sport)
+        def sportActivity = new SportActivity(params)
+        controller.show(sportActivity)
 
         then: "A model is populated containing the domain instance"
-        model.sportInstance == sport
+        model.sportActivityInstance == sportActivity
     }
 
     void "Test that the edit action returns the correct model"() {
@@ -83,11 +83,11 @@ class SportControllerSpec extends Specification {
 
         when: "A domain instance is passed to the edit action"
         populateValidParams(params)
-        def sport = new SportActivity(params)
-        controller.edit(sport)
+        def sportActivity = new SportActivity(params)
+        controller.edit(sportActivity)
 
         then: "A model is populated containing the domain instance"
-        model.sportInstance == sport
+        model.sportActivityInstance == sportActivity
     }
 
     void "Test the update action performs an update on a valid domain instance"() {
@@ -97,28 +97,28 @@ class SportControllerSpec extends Specification {
         controller.update(null)
 
         then: "A 404 error is returned"
-        response.redirectedUrl == '/sport/index'
+        response.redirectedUrl == '/sportActivity/index'
         flash.message != null
 
 
         when: "An invalid domain instance is passed to the update action"
         response.reset()
-        def sport = new SportActivity()
-        sport.validate()
-        controller.update(sport)
+        def sportActivity = new SportActivity()
+        sportActivity.validate()
+        controller.update(sportActivity)
 
         then: "The edit view is rendered again with the invalid instance"
         view == 'edit'
-        model.sportInstance == sport
+        model.sportActivityInstance == sportActivity
 
         when: "A valid domain instance is passed to the update action"
         response.reset()
         populateValidParams(params)
-        sport = new SportActivity(params).save(flush: true)
-        controller.update(sport)
+        sportActivity = new SportActivity(params).save(flush: true)
+        controller.update(sportActivity)
 
         then: "A redirect is issues to the show action"
-        response.redirectedUrl == "/sport/show/$sport.id"
+        response.redirectedUrl == "/sportActivity/show/$sportActivity.id"
         flash.message != null
     }
 
@@ -129,23 +129,23 @@ class SportControllerSpec extends Specification {
         controller.delete(null)
 
         then: "A 404 is returned"
-        response.redirectedUrl == '/sport/index'
+        response.redirectedUrl == '/sportActivity/index'
         flash.message != null
 
         when: "A domain instance is created"
         response.reset()
         populateValidParams(params)
-        def sport = new SportActivity(params).save(flush: true)
+        def sportActivity = new SportActivity(params).save(flush: true)
 
         then: "It exists"
         SportActivity.count() == 1
 
         when: "The domain instance is passed to the delete action"
-        controller.delete(sport)
+        controller.delete(sportActivity)
 
         then: "The instance is deleted"
         SportActivity.count() == 0
-        response.redirectedUrl == '/sport/index'
+        response.redirectedUrl == '/sportActivity/index'
         flash.message != null
     }
 }

@@ -10,22 +10,22 @@ import java.text.SimpleDateFormat
 
 import static org.springframework.http.HttpStatus.*
 
-@Transactional(readOnly = true)
-class SportController {
+@Transactional(readOnly = false)
+class SportActivityController {
 
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
 
     def index(Integer max) {
         params.max = Math.min(max ?: 10, 100)
-        respond Sport.list(params), model: [sportInstanceCount: Sport.count()]
+        respond SportActivity.list(params), model: [sportActivityInstanceCount: SportActivity.count()]
     }
 
-    def show(Sport sportInstance) {
-        respond sportInstance
+    def show(SportActivity sportActivityInstance) {
+        respond sportActivityInstance
     }
 
     def create() {
-        respond new Sport(params)
+        respond new SportActivity(params)
     }
 
     def getSportActivitiesByUser(String email) {
@@ -33,7 +33,7 @@ class SportController {
         if (emailValidator.isValid(email)) {
             def userInstance = User.findByEmail(email)
             if (userInstance) {
-                def userActivities = Sport.findAllByUser(userInstance)
+                def userActivities = SportActivity.findAllByUser(userInstance)
                 if (userActivities) {
                     JSONArray jsonArray = new JSONArray()
                     userActivities.each {
@@ -82,7 +82,7 @@ class SportController {
         }
         SimpleDateFormat format = new SimpleDateFormat("MM/dd/yy")
         //TODO: Delete OkyBar from constructor
-        def sport = new Sport(creationDate: format.parse(format.format(new Date())), description: params.description, name: params.name, user: userInstance, type: params.type, okiBar: new OkiBar())
+        def sport = new SportActivity(creationDate: format.parse(format.format(new Date())), description: params.description, name: params.name, user: userInstance, type: params.type, okiBar: new OkiBar())
         sport.save(flush: true)
         if (!sport.hasErrors()) {
             if (params.longitude && params.latitude) {
@@ -96,7 +96,7 @@ class SportController {
     }
 
     def setSportActivityFields(long sportActivityId) {
-        def sport = Sport.findById(sportActivityId)
+        def sport = SportActivity.findById(sportActivityId)
         if (sport) {
             if (params.duration) {
                 sport.duration = Double.valueOf(params.duration)
@@ -125,73 +125,72 @@ class SportController {
             }
         } else {
             response.status = 404
-            render "Sport Activity Not Found"
+            render "SportActivity Activity Not Found"
         }
     }
-
     @Transactional
-    def save(Sport sportInstance) {
-        if (sportInstance == null) {
+    def save(SportActivity sportActivityInstance) {
+        if (sportActivityInstance == null) {
             notFound()
             return
         }
 
-        if (sportInstance.hasErrors()) {
-            respond sportInstance.errors, view: 'create'
+        if (sportActivityInstance.hasErrors()) {
+            respond sportActivityInstance.errors, view: 'create'
             return
         }
 
-        sportInstance.save flush: true
+        sportActivityInstance.save flush: true
 
         request.withFormat {
             form multipartForm {
-                flash.message = message(code: 'default.created.message', args: [message(code: 'sport.label', default: 'Sport'), sportInstance.id])
-                redirect sportInstance
+                flash.message = message(code: 'default.created.message', args: [message(code: 'sportActivity.label', default: 'SportActivity'), sportActivityInstance.id])
+                redirect sportActivityInstance
             }
-            '*' { respond sportInstance, [status: CREATED] }
+            '*' { respond sportActivityInstance, [status: CREATED] }
         }
     }
 
-    def edit(Sport sportInstance) {
-        respond sportInstance
+    def edit(SportActivity sportActivityInstance) {
+        respond sportActivityInstance
     }
 
     @Transactional
-    def update(Sport sportInstance) {
-        if (sportInstance == null) {
+    def update(SportActivity sportActivityInstance) {
+        if (sportActivityInstance == null) {
             notFound()
             return
         }
 
-        if (sportInstance.hasErrors()) {
-            respond sportInstance.errors, view: 'edit'
+        if (sportActivityInstance.hasErrors()) {
+            respond sportActivityInstance.errors, view: 'edit'
             return
         }
 
-        sportInstance.save flush: true
+        sportActivityInstance.save flush: true
 
         request.withFormat {
             form multipartForm {
-                flash.message = message(code: 'default.updated.message', args: [message(code: 'Sport.label', default: 'Sport'), sportInstance.id])
-                redirect sportInstance
+                flash.message = message(code: 'default.updated.message', args: [message(code: 'SportActivity.label', default: 'SportActivity'), sportActivityInstance.id])
+                redirect sportActivityInstance
             }
-            '*' { respond sportInstance, [status: OK] }
+            '*' { respond sportActivityInstance, [status: OK] }
         }
     }
 
     @Transactional
-    def delete(Sport sportInstance) {
+    def delete(SportActivity sportActivityInstance) {
 
-        if (sportInstance == null) {
+        if (sportActivityInstance == null) {
             notFound()
             return
         }
 
-        sportInstance.delete flush: true
+        sportActivityInstance.delete flush: true
 
         request.withFormat {
             form multipartForm {
-                flash.message = message(code: 'default.deleted.message', args: [message(code: 'Sport.label', default: 'Sport'), sportInstance.id])
+                flash.message = message(code: 'default.deleted.message', args: [message(code: 'SportActivity.label', default: 'SportActivity'), sportActivityInstance.id])
                 redirect action: "index", method: "GET"
             }
             '*' { render status: NO_CONTENT }
@@ -201,7 +200,7 @@ class SportController {
     protected void notFound() {
         request.withFormat {
             form multipartForm {
-                flash.message = message(code: 'default.not.found.message', args: [message(code: 'sport.label', default: 'Sport'), params.id])
+                flash.message = message(code: 'default.not.found.message', args: [message(code: 'sportActivity.label', default: 'SportActivity'), params.id])
                 redirect action: "index", method: "GET"
             }
             '*' { render status: NOT_FOUND }

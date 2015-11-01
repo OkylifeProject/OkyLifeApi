@@ -25,3 +25,6 @@ alter table user_user drop constraint FK_s7pwk9swjfqs0w7ub9tt5s47y if exists [42
 10-31 16:43:55 jdbc[12]: exception
 org.h2.jdbc.JdbcSQLException: Table "USER_USER" not found; SQL statement:
 alter table user_user drop constraint FK_mkovi37gqcn1a59q0qylfi1ef if exists [42102-176]
+10-31 19:49:36 jdbc[12]: exception
+org.h2.jdbc.JdbcSQLException: Table "SPORT_ACTIVITY" not found; SQL statement:
+alter table sport_activity drop constraint FK_1c5rwxl62lg971p6bxxyw6i81 if exists [42102-176]

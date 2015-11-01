@@ -1,6 +1,6 @@
 package okylifeapi
 
-class Sport extends Activity {
+class SportActivity extends Activity {
     String type
     double duration
     double distance

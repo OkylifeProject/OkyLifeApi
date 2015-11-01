@@ -28,3 +28,6 @@ alter table user_user drop constraint FK_mkovi37gqcn1a59q0qylfi1ef if exists [42
 10-31 19:49:36 jdbc[12]: exception
 org.h2.jdbc.JdbcSQLException: Table "SPORT_ACTIVITY" not found; SQL statement:
 alter table sport_activity drop constraint FK_1c5rwxl62lg971p6bxxyw6i81 if exists [42102-176]
+10-31 20:18:02 jdbc[12]: exception
+org.h2.jdbc.JdbcSQLException: Table "EAT_ACTIVITY_INGREDIENTS" not found; SQL statement:
+alter table eat_activity_ingredients drop constraint FK_9yrm6wies271lu65qv5dqgjyu if exists [42102-176]

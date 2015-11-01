@@ -112,12 +112,19 @@ class ActivityController {
     }
 
     def addLocation(long activityId, String location) {
-        JSONObject jsonLocations = new JSONObject(locations)
-        if (location) {
+        JSONObject jsonLocation
+        try {
+            jsonLocation = new JSONObject(location)
+        } catch (Exception e) {
+            response.status = 505
+            render "Fatal Error: Invalid Data Array: "
+            return
+        }
+        if (!jsonLocation.isEmpty()) {
             def activityInstance = Activity.get(Long.valueOf(activityId))
             if (activityInstance) {
-                def locationInstance = new Location(longitude: Double.valueOf(jsonLocations.get("longitude")),
-                        latitude: Double.valueOf(jsonLocations.get("latitude")), activity: activityInstance)
+                def locationInstance = new Location(longitude: Double.valueOf(jsonLocation.get("longitude")),
+                        latitude: Double.valueOf(jsonLocation.get("latitude")), activity: activityInstance)
                 locationInstance.save(flush: true)
                 if (!locationInstance.hasErrors()) {
                     render "Success"

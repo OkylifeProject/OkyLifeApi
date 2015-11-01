@@ -124,6 +124,38 @@ class EatActivityController {
         }
     }
 
+    def addIngredientSet(long eatActivityId, String ingredientSet) {
+        JSONObject jsonObject
+        JSONArray ingredients
+        try {
+            jsonObject = new JSONObject(ingredientSet)
+            ingredients = jsonObject.getJSONArray("locations")
+        } catch (Exception e) {
+            response.status = 505
+            render "Fatal Error: Invalid Data Array: " + jsonObject.toString()
+            return
+        }
+
+        def activityInstance = EatActivity.get(eatActivityId)
+        if (activityInstance) {
+            if (!ingredients.isEmpty()) {
+                ingredients.each {
+                    activityInstance.ingredients.add(it.getAt("name"))
+                    activityInstance.save(flush: true)
+                    if (activityInstance.hasErrors()) {
+                        render activityInstance.getErrors().getAllErrors()
+                        return
+                    }
+                }
+                render "Success"
+            } else {
+                render "There are not ingredients"
+            }
+        } else {
+            response.status = 404
+            render "Eat Activity Not Found"
+        }
+    }
 
     @Transactional
     def save(EatActivity eatActivityInstance) {

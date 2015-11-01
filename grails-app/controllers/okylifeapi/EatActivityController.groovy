@@ -53,7 +53,7 @@ class EatActivityController {
                     render jsonArray as JSON
                 } else {
                     response.status = 404
-                    render "User doesnt have Activities"
+                    render "User doesnt have Eat Activities"
                 }
             } else {
                 response.status = 404
@@ -62,6 +62,28 @@ class EatActivityController {
         } else {
             response.status = 404
             render "Invalid email"
+        }
+    }
+
+    def getEatActivityIngredients(long eatActivityId) {
+        def eatActivity = EatActivity.get(eatActivityId)
+        if (eatActivity) {
+            JSONArray jsonIngredients = new JSONArray()
+            def ingredients = eatActivity.getIngredients()
+            if (ingredients != [] && ingredients != null) {
+                ingredients.each {
+                    JSONObject jsonIngredient = new JSONObject()
+                    jsonIngredient.put("name", it.toString())
+                    jsonIngredients.put(jsonIngredient)
+                }
+                render jsonIngredients as JSON
+            } else {
+                response.status = 404
+                render "There are not Ingredients"
+            }
+        } else {
+            response.status = 404
+            render "Error: Eat Activity Not Found"
         }
     }
 
@@ -129,7 +151,7 @@ class EatActivityController {
         JSONArray ingredients
         try {
             jsonObject = new JSONObject(ingredientSet)
-            ingredients = jsonObject.getJSONArray("locations")
+            ingredients = jsonObject.getJSONArray("ingredients")
         } catch (Exception e) {
             response.status = 505
             render "Fatal Error: Invalid Data Array: " + jsonObject.toString()

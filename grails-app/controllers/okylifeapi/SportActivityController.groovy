@@ -54,7 +54,7 @@ class SportActivityController {
                     render jsonArray as JSON
                 } else {
                     response.status = 404
-                    render "User doesnt have Activities"
+                    render "User doesnt have Sport Activities"
                 }
             } else {
                 response.status = 404

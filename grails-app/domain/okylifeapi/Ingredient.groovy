@@ -9,6 +9,7 @@ class Ingredient {
     double carbohydrates
     double proteins
 
+    //TODO delete relation
     static belongsTo = [eatActivity: EatActivity]
     
     static constraints = {

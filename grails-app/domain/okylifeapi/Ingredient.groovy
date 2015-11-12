@@ -9,6 +9,8 @@ class Ingredient {
     double carbohydrates
     double proteins
 
+    static belongsTo = [eatActivity: EatActivity]
+
     static constraints = {
         number min: (double) 1
         fat min: (double) 0

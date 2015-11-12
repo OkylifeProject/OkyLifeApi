@@ -9,6 +9,6 @@ class VisitPlaceActivity extends Activity {
         distance min: (double) 0
         type nullable: true
         address nullable: true
-        type inList: ["Park", "Hospital", "Museum", "Store", "Restaurant"]
+        type inList: ["Park", "Hospital", "Museum", "Store", "Restaurant"] - re
     }
 }

@@ -14,7 +14,7 @@
 <div class="fieldcontain ${hasErrors(bean: visitPlaceActivityInstance, field: 'description', 'error')} ">
 	<label for="description">
 		<g:message code="visitPlaceActivity.description.label" default="Description"/>
-
+		
 	</label>
 	<g:textField name="description" value="${visitPlaceActivityInstance?.description}"/>
 
@@ -32,7 +32,7 @@
 <div class="fieldcontain ${hasErrors(bean: visitPlaceActivityInstance, field: 'locations', 'error')} ">
 	<label for="locations">
 		<g:message code="visitPlaceActivity.locations.label" default="Locations"/>
-
+		
 	</label>
 
 	<ul class="one-to-many">
@@ -60,16 +60,18 @@
 <div class="fieldcontain ${hasErrors(bean: visitPlaceActivityInstance, field: 'type', 'error')} ">
 	<label for="type">
 		<g:message code="visitPlaceActivity.type.label" default="Type"/>
-
+		
 	</label>
-	<g:textField name="type" value="${visitPlaceActivityInstance?.type}"/>
+	<g:select name="type" from="${visitPlaceActivityInstance.constraints.type.inList}"
+			  value="${visitPlaceActivityInstance?.type}" valueMessagePrefix="visitPlaceActivity.type"
+			  noSelection="['': '']"/>
 
 </div>
 
 <div class="fieldcontain ${hasErrors(bean: visitPlaceActivityInstance, field: 'address', 'error')} ">
 	<label for="address">
 		<g:message code="visitPlaceActivity.address.label" default="Address"/>
-
+		
 	</label>
 	<g:textField name="address" value="${visitPlaceActivityInstance?.address}"/>
 

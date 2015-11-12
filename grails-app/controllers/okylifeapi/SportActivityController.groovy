@@ -102,7 +102,7 @@ class SportActivityController {
             sport.hydration = Double.valueOf(params.hydration)
         }
         if (params.calories) {
-            sport.hydration = Double.valueOf(params.calories)
+            sport.calories = Double.valueOf(params.calories)
         }
         sport.save(flush: true)
 

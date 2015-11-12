@@ -77,6 +77,15 @@ class VisitPlaceActivityController {
         }
         SimpleDateFormat format = new SimpleDateFormat("MM/dd/yy")
         def visitPlace = new VisitPlaceActivity(creationDate: format.parse(format.format(new Date())), description: params.description, name: params.name, user: userInstance)
+        if (params.calories) {
+            visitPlace.calories = Double.valueOf(params.calories)
+        }
+        if (params.address) {
+            visitPlace.address = String.valueOf(params.address)
+        }
+        if (params.distance) {
+            visitPlace.distance = Double.valueOf(params.distance)
+        }
         visitPlace.save(flush: true)
         if (!visitPlace.hasErrors()) {
             if (params.longitude && params.latitude) {

@@ -155,8 +155,13 @@ class EatActivityController {
         def eatActivity = EatActivity.findById(eatActivityId)
         if (eatActivity) {
             def ingredient = new Ingredient(name: params.name, description: params.description,
-                    number: Double.valueOf(params.number), brand: params.brand, fat: Double.valueOf(params.fat),
-                    carbohydrates: Double.valueOf(params.carbohydrates), proteins: Double.valueOf(params.proteins), eatActivity: eatActivity)
+                    number: Double.valueOf(params.number),
+                    fat: Double.valueOf(params.fat),
+                    carbohydrates: Double.valueOf(params.carbohydrates),
+                    proteins: Double.valueOf(params.proteins),
+                    calories: Double.valueOf(params.calories),
+                    rationType: params.rationType,
+                    eatActivity: eatActivity)
             ingredient.save(flush: true)
             if (!ingredient.hasErrors()) {
                 render "Success"

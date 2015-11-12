@@ -81,7 +81,31 @@ class SportActivityController {
         }
         SimpleDateFormat format = new SimpleDateFormat("MM/dd/yy")
         def sport = new SportActivity(creationDate: format.parse(format.format(new Date())), description: params.description, name: params.name, user: userInstance, type: params.type)
+
+        /**ADITIONAL PARAMETERS**/
+        if (params.duration) {
+            sport.duration = Double.valueOf(params.duration)
+        }
+        if (params.distance) {
+            sport.distance = Double.valueOf(params.distance)
+        }
+        if (params.velocity) {
+            sport.velocity = Double.valueOf(params.velocity)
+        }
+        if (params.rhythm) {
+            sport.rhythm = Double.valueOf(params.rhythm)
+        }
+        if (params.targetDistance) {
+            sport.targetDistance = Double.valueOf(params.targetDistance)
+        }
+        if (params.hydration) {
+            sport.hydration = Double.valueOf(params.hydration)
+        }
+        if (params.calories) {
+            sport.hydration = Double.valueOf(params.calories)
+        }
         sport.save(flush: true)
+
         if (!sport.hasErrors()) {
             if (params.longitude && params.latitude) {
                 def location = new Location(longitude: Double.valueOf(params.longitude), latitude: Double.valueOf(params.latitude), activity: sport)

@@ -8,6 +8,7 @@ class SportActivity extends Activity {
     double rhythm
     double targetDistance
     double hydration
+    double calories
 
     static constraints = {
         hydration min: (double) 0
@@ -16,6 +17,7 @@ class SportActivity extends Activity {
         velocity min: (double) 0
         distance min: (double) 0
         targetDistance min: (double) 0
+        calories min: (double) 0
         type inList: ["Run", "Biking", "Walk"]
     }
 }

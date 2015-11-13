@@ -19,5 +19,6 @@ class Ingredient {
         carbohydrates min: (double) 0
         proteins min: (double) 0
         rationType inList: ["g", "ml", "Unities", "Spoonfuls", "Cups"]
+        description nullable: true
     }
 }

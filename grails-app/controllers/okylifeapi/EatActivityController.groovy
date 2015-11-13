@@ -106,17 +106,47 @@ class EatActivityController {
             render "User doesnt exists"
             return
         }
+        JSONArray jsonIngredientsArray
+        if (params.ingredients) {
+            try {
+                JSONObject jsonIngredients
+                jsonIngredients = new JSONObject(params.ingredients)
+                jsonIngredientsArray = jsonIngredients.getJSONArray("ingredients")
+            } catch (Exception e) {
+                response.status = 505
+                render "Fatal Error: Invalid Data Array: " + jsonIngredients.toString()
+                return
+            }
+        }
         SimpleDateFormat format = new SimpleDateFormat("MM/dd/yy")
         def eatActivity = new EatActivity(creationDate: format.parse(format.format(new Date())), description: params.description, name: params.name, user: userInstance, type: params.type)
-        if (params.ingredients) {
-
-        }
-
         eatActivity.save(flush: true)
         if (!eatActivity.hasErrors()) {
             if (params.longitude && params.latitude) {
                 def location = new Location(longitude: Double.valueOf(params.longitude), latitude: Double.valueOf(params.latitude), activity: eatActivity)
                 location.save(flush: true)
+            }
+            if (jsonIngredientsArray) {
+                jsonIngredientsArray.each {
+                    println(it.getAt("number"))
+                    def ingredient = new Ingredient(
+                            eatActivity: eatActivity,
+                            name: String.valueOf(it.getAt("name")),
+                            description: String.valueOf(it.getAt("description")),
+                            rationType: String.valueOf(it.getAt("rationType")),
+                            number: Double.valueOf(it.getAt("number")),
+                            fat: Double.valueOf(it.getAt("fat")),
+                            carbohydrates: Double.valueOf(it.getAt("carbohydrates")),
+                            calories: Double.valueOf(it.getAt("calories")),
+                            proteins: Double.valueOf(it.getAt("proteins"))
+                    )
+                    ingredient.save(flush: true)
+                    if (ingredient.hasErrors()) {
+                        response.status = 505
+                        render "Fatal Error: Invalid Data Array: " + ingredient.getErrors().getAllErrors()
+                        return
+                    }
+                }
             }
             render "Success"
         } else if (eatActivity.hasErrors()) {

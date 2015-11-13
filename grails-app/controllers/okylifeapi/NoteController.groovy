@@ -115,7 +115,20 @@ class NoteController {
             jsonNote.put("ownerEmail", userNote.getOwner().getEmail())
             jsonNote.put("content", userNote.getContent())
             jsonNote.put("publicationDate", userNote.getPublicationDate())
-            jsonNotes.put(jsonNotes)
+
+            if (userInstance.imagePath != null && userInstance.imagePath != "") {
+                def userImage = new File('app-data/profile-pics/' + userInstance.imagePath)
+                if (userImage.exists()) {
+                    def encode = new BASE64Encoder().encode(userImage.bytes)
+                    jsonNote.put("ownerImageBytes", encode)
+                } else {
+                    jsonNote.put("ownerImageBytes", "")
+                }
+            } else {
+                jsonNote.put("ownerImageBytes", "")
+            }
+
+            jsonNotes.put(jsonNote)
         }
         def userFriends = userInstance.getFriends()
         if (userFriends) {
@@ -126,6 +139,19 @@ class NoteController {
                     jsonNote.put("ownerEmail", friendNote.getOwner().getEmail())
                     jsonNote.put("content", friendNote.getContent())
                     jsonNote.put("publicationDate", friendNote.getPublicationDate())
+
+                    if (it.imagePath != null && it.imagePath != "") {
+                        def userImage = new File('app-data/profile-pics/' + it.imagePath)
+                        if (userImage.exists()) {
+                            def encode = new BASE64Encoder().encode(userImage.bytes)
+                            jsonNote.put("ownerImageBytes", encode)
+                        } else {
+                            jsonNote.put("ownerImageBytes", "")
+                        }
+                    } else {
+                        jsonNote.put("ownerImageBytes", "")
+                    }
+
                     jsonNotes.put(jsonNote)
                 }
             }

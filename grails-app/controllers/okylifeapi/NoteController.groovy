@@ -95,6 +95,44 @@ class NoteController {
         }
     }
 
+    def getRecentNotesByUser(String email) {
+        EmailValidator emailValidator = EmailValidator.getInstance()
+        if (!emailValidator.isValid(email)) {
+            response.status = 404
+            render "Invalid Email"
+            return
+        }
+        def userInstance = User.findByEmail(email)
+        if (!userInstance) {
+            response.status = 404
+            render "User doesnt exists"
+            return
+        }
+        JSONArray jsonNotes = new JSONArray()
+        Note userNote = userInstance.getNotes().last()
+        if (userNote) {
+            JSONObject jsonNote = new JSONObject()
+            jsonNote.put("ownerEmail", userNote.getOwner().getEmail())
+            jsonNote.put("content", userNote.getContent())
+            jsonNote.put("publicationDate", userNote.getPublicationDate())
+            jsonNotes.put(jsonNotes)
+        }
+        def userFriends = userInstance.getFriends()
+        if (userFriends) {
+            userFriends.each {
+                Note friendNote = it.getNotes().last()
+                if (friendNote) {
+                    JSONObject jsonNote = new JSONObject()
+                    jsonNote.put("ownerEmail", friendNote.getOwner().getEmail())
+                    jsonNote.put("content", friendNote.getContent())
+                    jsonNote.put("publicationDate", friendNote.getPublicationDate())
+                    jsonNotes.put(jsonNote)
+                }
+            }
+        }
+        render jsonNotes as JSON
+    }
+
     def getImageHash(long id) {
         def noteInstance = Note.findById(id)
         if (noteInstance.imagePath != null && noteInstance.imagePath != "") {

@@ -10,6 +10,8 @@ class User {
     String registerType;
     String age
 
+    List notes
+
     static hasMany = [notes: Note, friends: User, messages: Message, activities: Activity]
 
     static mappedBy = [messages: 'recipient']

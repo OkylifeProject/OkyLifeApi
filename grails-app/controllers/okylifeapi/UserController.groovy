@@ -43,7 +43,17 @@ class UserController {
             render "Email already in use"
             return
         }
-        def userInstance = new User(registerType: params.registerType, sex: params.sex, firstName: params.firstName, lastName: params.lastName, password: params.password, email: params.email, age: params.age)
+        double weight
+        double height
+        if (params.sex == "Male") {
+            weight = 70
+            height = 170
+        } else {
+            weight = 60
+            height = 160
+        }
+
+        def userInstance = new User(weight: weight, height: height, registerType: params.registerType, sex: params.sex, firstName: params.firstName, lastName: params.lastName, password: params.password, email: params.email, age: params.age)
         userInstance.save(flush: true)
         if (!userInstance.hasErrors()) {
             if (params.image) {
@@ -83,6 +93,12 @@ class UserController {
                     render "Passwords doesn't match"
                     return
                 }
+            }
+            if (params.weight) {
+                userInstance.weight = params.weight
+            }
+            if (params.height) {
+                userInstance.height = params.height
             }
             if (params.age) {
                 userInstance.age = params.age

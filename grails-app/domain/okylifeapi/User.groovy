@@ -7,8 +7,10 @@ class User {
     String imagePath
     String email
     String password
-    String registerType;
+    String registerType
     String age
+    double weight
+    double height
 
     List notes
 

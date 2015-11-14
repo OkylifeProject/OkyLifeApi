@@ -19,6 +19,8 @@ class User {
     static mappedBy = [messages: 'recipient']
 
     static constraints = {
+        height min: (double) 0
+        weight min: (double) 0
         firstName blank: false, nullable: false
         lastName blank: true, nullable: true
         sex inList: ["Male", "Female"]

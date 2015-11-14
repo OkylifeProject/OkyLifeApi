@@ -175,6 +175,8 @@ class UserController {
                 jsonObject.put("age", userInstance.getAge())
                 jsonObject.put("sex", userInstance.getSex())
                 jsonObject.put("registerType", userInstance.getRegisterType())
+                jsonObject.put("weight", userInstance.getWeight())
+                jsonObject.put("height", userInstance.getHeight())
 
                 if (userInstance.imagePath != null && userInstance.imagePath != "") {
                     def userImage = new File('app-data/profile-pics/' + userInstance.imagePath)

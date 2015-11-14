@@ -95,10 +95,10 @@ class UserController {
                 }
             }
             if (params.weight) {
-                userInstance.weight = params.weight
+                userInstance.weight = Double.valueOf(params.weight)
             }
             if (params.height) {
-                userInstance.height = params.height
+                userInstance.height = Double.valueOf(params.height)
             }
             if (params.age) {
                 userInstance.age = params.age

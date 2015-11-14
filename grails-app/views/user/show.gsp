@@ -22,6 +22,28 @@
 			<div class="message" role="status">${flash.message}</div>
 			</g:if>
 			<ol class="property-list user">
+
+				<g:if test="${userInstance?.height}">
+					<li class="fieldcontain">
+						<span id="height-label" class="property-label"><g:message code="user.height.label"
+																				  default="Height"/></span>
+
+						<span class="property-value" aria-labelledby="height-label"><g:fieldValue bean="${userInstance}"
+																								  field="height"/></span>
+
+					</li>
+				</g:if>
+
+				<g:if test="${userInstance?.weight}">
+					<li class="fieldcontain">
+						<span id="weight-label" class="property-label"><g:message code="user.weight.label"
+																				  default="Weight"/></span>
+
+						<span class="property-value" aria-labelledby="weight-label"><g:fieldValue bean="${userInstance}"
+																								  field="weight"/></span>
+
+					</li>
+				</g:if>
 			
 				<g:if test="${userInstance?.firstName}">
 				<li class="fieldcontain">

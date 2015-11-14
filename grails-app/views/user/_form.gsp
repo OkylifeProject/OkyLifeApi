@@ -2,6 +2,24 @@
 
 
 
+<div class="fieldcontain ${hasErrors(bean: userInstance, field: 'height', 'error')} required">
+	<label for="height">
+		<g:message code="user.height.label" default="Height"/>
+		<span class="required-indicator">*</span>
+	</label>
+	<g:field name="height" value="${fieldValue(bean: userInstance, field: 'height')}" required=""/>
+
+</div>
+
+<div class="fieldcontain ${hasErrors(bean: userInstance, field: 'weight', 'error')} required">
+	<label for="weight">
+		<g:message code="user.weight.label" default="Weight"/>
+		<span class="required-indicator">*</span>
+	</label>
+	<g:field name="weight" value="${fieldValue(bean: userInstance, field: 'weight')}" required=""/>
+
+</div>
+
 <div class="fieldcontain ${hasErrors(bean: userInstance, field: 'firstName', 'error')} required">
 	<label for="firstName">
 		<g:message code="user.firstName.label" default="First Name" />
@@ -79,7 +97,16 @@
 		<g:message code="user.activities.label" default="Activities" />
 		
 	</label>
-	<g:select name="activities" from="${okylifeapi.Activity.list()}" multiple="multiple" optionKey="id" size="5" value="${userInstance?.activities*.id}" class="many-to-many"/>
+
+	<ul class="one-to-many">
+		<g:each in="${userInstance?.activities ?}" var="a">
+			<li><g:link controller="activity" action="show" id="${a.id}">${a?.encodeAsHTML()}</g:link></li>
+		</g:each>
+		<li class="add">
+			<g:link controller="activity" action="create"
+					params="['user.id': userInstance?.id]">${message(code: 'default.add.label', args: [message(code: 'activity.label', default: 'Activity')])}</g:link>
+		</li>
+	</ul>
 
 </div>
 

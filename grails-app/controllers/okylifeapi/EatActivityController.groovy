@@ -120,6 +120,15 @@ class EatActivityController {
         }
         SimpleDateFormat format = new SimpleDateFormat("MM/dd/yy")
         def eatActivity = new EatActivity(creationDate: format.parse(format.format(new Date())), description: params.description, name: params.name, user: userInstance, type: params.type)
+        if (params.totalFat) {
+            eatActivity.totalFat = Double.valueOf(params.totalFat)
+        }
+        if (params.totalCarbohydrates) {
+            eatActivity.totalCarbohydrates = Double.valueOf(params.totalCarbohydrates)
+        }
+        if (params.totalProteins) {
+            eatActivity.totalProteins = Double.valueOf(params.totalProteins)
+        }
         eatActivity.save(flush: true)
         if (!eatActivity.hasErrors()) {
             if (params.longitude && params.latitude) {

@@ -129,6 +129,9 @@ class EatActivityController {
         if (params.totalProteins) {
             eatActivity.totalProteins = Double.valueOf(params.totalProteins)
         }
+        if (params.totalCalories) {
+            eatActivity.totalCalories = Double.valueOf(params.totalCalories)
+        }
         eatActivity.save(flush: true)
         if (!eatActivity.hasErrors()) {
             if (params.longitude && params.latitude) {

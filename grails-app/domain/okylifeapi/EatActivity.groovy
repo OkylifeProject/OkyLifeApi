@@ -7,6 +7,7 @@ class EatActivity extends Activity {
     double totalFat
     double totalCarbohydrates
     double totalProteins
+    double totalCalories
     static hasMany = [ingredients: Ingredient]
 
     static constraints = {
@@ -16,6 +17,7 @@ class EatActivity extends Activity {
         totalPortions min: (double) 0
         totalFat min: (double) 0
         totalProteins min: (double) 0
+        totalCalories min: (double) 0
         ingredients nullable: true
     }
 }

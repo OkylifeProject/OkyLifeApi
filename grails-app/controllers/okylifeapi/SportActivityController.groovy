@@ -104,6 +104,7 @@ class SportActivityController {
         if (params.calories) {
             sport.calories = Double.valueOf(params.calories)
         }
+
         sport.save(flush: true)
 
         if (!sport.hasErrors()) {
@@ -111,6 +112,31 @@ class SportActivityController {
                 def location = new Location(longitude: Double.valueOf(params.longitude), latitude: Double.valueOf(params.latitude), activity: sport)
                 location.save(flush: true)
             }
+
+            if (params.locationSet) {
+                JSONObject jsonObject
+                JSONArray locations
+                try {
+                    jsonObject = new JSONObject(params.locationSet)
+                    locations = jsonObject.getJSONArray("locations")
+                } catch (Exception e) {
+                    response.status = 505
+                    render "Fatal Error: Invalid Data Array: " + jsonObject.toString()
+                    return
+                }
+                if (!locations.isEmpty()) {
+                    locations.each {
+                        def locationInstance = new Location(activity: sport,
+                                longitude: it.getAt("longitude"), latitude: it.getAt("latitude"))
+                        locationInstance.save(flush: true)
+                        if (locationInstance.hasErrors()) {
+                            render locationInstance.getErrors().getAllErrors()
+                            return
+                        }
+                    }
+                }
+            }
+
             render "Success"
         } else if (sport.hasErrors()) {
             render "There are several data errors; please verify and re-send the information\n" + sport.errors.getAllErrors()

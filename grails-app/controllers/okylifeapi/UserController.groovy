@@ -330,7 +330,7 @@ class UserController {
             render "User doesn't Exists"
             return
         }
-        def users = User.findAllByFirstNameIlike(userName)
+        def users = User.findAllByFirstNameIlike("%" + userName + "%")
         if (users) {
             JSONArray jsonArray = new JSONArray();
             users.each {

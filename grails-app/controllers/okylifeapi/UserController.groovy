@@ -318,7 +318,18 @@ class UserController {
         }
     }
 
-    def getUsersByName(String userName) {
+    def getUsersByName(String email, String userName) {
+        EmailValidator emailValidator = EmailValidator.getInstance()
+        if (!emailValidator.isValid(email)) {
+            render "Invalid Email"
+            return
+        }
+        def currentUser = User.findByEmail(email)
+        if (!currentUser) {
+            response.status = 404
+            render "User doesn't Exists"
+            return
+        }
         def users = User.findAllByFirstNameIlike(userName)
         if (users) {
             JSONArray jsonArray = new JSONArray();
@@ -327,7 +338,13 @@ class UserController {
                 jsonObject.put("email", it.getEmail())
                 jsonObject.put("id", it.getId())
                 jsonObject.put("name", it.getFirstName())
-                jsonObject.put("isFriend", "false")
+
+                def friends = currentUser.getFriends()
+                if (friends.contains(it)) {
+                    jsonObject.put("isFriend", "true")
+                } else {
+                    jsonObject.put("isFriend", "false")
+                }
                 if (it.imagePath != null && it.imagePath != "") {
                     def friendImage = new File('app-data/profile-pics/' + it.imagePath)
                     if (friendImage.exists()) {

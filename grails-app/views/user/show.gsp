@@ -44,6 +44,17 @@
 
 					</li>
 				</g:if>
+
+				<g:if test="${userInstance?.calories}">
+					<li class="fieldcontain">
+						<span id="calories-label" class="property-label"><g:message code="user.calories.label"
+																					default="Calories"/></span>
+
+						<span class="property-value" aria-labelledby="calories-label"><g:fieldValue
+								bean="${userInstance}" field="calories"/></span>
+
+					</li>
+				</g:if>
 			
 				<g:if test="${userInstance?.firstName}">
 				<li class="fieldcontain">

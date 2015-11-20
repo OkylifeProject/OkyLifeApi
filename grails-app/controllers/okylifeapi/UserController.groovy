@@ -53,7 +53,7 @@ class UserController {
             height = 160
         }
 
-        def userInstance = new User(weight: weight, height: height, registerType: params.registerType, sex: params.sex, firstName: params.firstName, lastName: params.lastName, password: params.password, email: params.email, age: params.age)
+        def userInstance = new User(calories: 0, weight: weight, height: height, registerType: params.registerType, sex: params.sex, firstName: params.firstName, lastName: params.lastName, password: params.password, email: params.email, age: params.age)
         userInstance.save(flush: true)
         if (!userInstance.hasErrors()) {
             if (params.image) {
@@ -102,6 +102,9 @@ class UserController {
             }
             if (params.age) {
                 userInstance.age = params.age
+            }
+            if (params.calories) {
+                userInstance.calories = Double.valueOf(params.calories)
             }
             if (params.image) {
                 def newFile = new File('app-data/profile-pics/' + params.email + '-pic.jpg')
@@ -177,6 +180,7 @@ class UserController {
                 jsonObject.put("registerType", userInstance.getRegisterType())
                 jsonObject.put("weight", userInstance.getWeight())
                 jsonObject.put("height", userInstance.getHeight())
+                jsonObject.put("calories", userInstance.getCalories())
 
                 if (userInstance.imagePath != null && userInstance.imagePath != "") {
                     def userImage = new File('app-data/profile-pics/' + userInstance.imagePath)

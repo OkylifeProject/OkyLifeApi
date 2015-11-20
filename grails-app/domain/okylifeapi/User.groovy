@@ -11,6 +11,7 @@ class User {
     String age
     double weight
     double height
+    double calories
 
     List notes
 
@@ -21,6 +22,7 @@ class User {
     static constraints = {
         height min: (double) 0
         weight min: (double) 0
+        calories min: (double) 0
         firstName blank: false, nullable: false
         lastName blank: true, nullable: true
         sex inList: ["Male", "Female"]

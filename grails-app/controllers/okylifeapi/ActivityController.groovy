@@ -66,6 +66,7 @@ class ActivityController {
                     userActivities.each {
                         JSONObject jsonObject = new JSONObject()
                         JSONArray jsonLocations = new JSONArray()
+                        jsonObject.put("class", it.getClass())
                         jsonObject.put("id", it.getId())
                         jsonObject.put("name", it.getName())
                         jsonObject.put("description", it.getDescription())

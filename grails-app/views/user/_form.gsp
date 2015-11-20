@@ -20,6 +20,15 @@
 
 </div>
 
+<div class="fieldcontain ${hasErrors(bean: userInstance, field: 'calories', 'error')} required">
+	<label for="calories">
+		<g:message code="user.calories.label" default="Calories"/>
+		<span class="required-indicator">*</span>
+	</label>
+	<g:field name="calories" value="${fieldValue(bean: userInstance, field: 'calories')}" required=""/>
+
+</div>
+
 <div class="fieldcontain ${hasErrors(bean: userInstance, field: 'firstName', 'error')} required">
 	<label for="firstName">
 		<g:message code="user.firstName.label" default="First Name" />
@@ -107,6 +116,7 @@
 					params="['user.id': userInstance?.id]">${message(code: 'default.add.label', args: [message(code: 'activity.label', default: 'Activity')])}</g:link>
 		</li>
 	</ul>
+
 
 </div>
 

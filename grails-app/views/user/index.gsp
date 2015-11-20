@@ -29,14 +29,15 @@
 
 						<g:sortableColumn property="weight"
 										  title="${message(code: 'user.weight.label', default: 'Weight')}"/>
+
+						<g:sortableColumn property="calories"
+										  title="${message(code: 'user.calories.label', default: 'Calories')}"/>
 					
 						<g:sortableColumn property="firstName" title="${message(code: 'user.firstName.label', default: 'First Name')}" />
 					
 						<g:sortableColumn property="lastName" title="${message(code: 'user.lastName.label', default: 'Last Name')}" />
 					
 						<g:sortableColumn property="sex" title="${message(code: 'user.sex.label', default: 'Sex')}" />
-					
-						<g:sortableColumn property="imagePath" title="${message(code: 'user.imagePath.label', default: 'Image Path')}" />
 					
 					</tr>
 				</thead>
@@ -49,13 +50,13 @@
 
 						<td>${fieldValue(bean: userInstance, field: "weight")}</td>
 
+						<td>${fieldValue(bean: userInstance, field: "calories")}</td>
+
 						<td>${fieldValue(bean: userInstance, field: "firstName")}</td>
 
 						<td>${fieldValue(bean: userInstance, field: "lastName")}</td>
 					
 						<td>${fieldValue(bean: userInstance, field: "sex")}</td>
-					
-						<td>${fieldValue(bean: userInstance, field: "imagePath")}</td>
 					
 					</tr>
 				</g:each>

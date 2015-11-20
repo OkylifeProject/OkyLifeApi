@@ -290,6 +290,7 @@ class UserController {
                         jsonObject.put("email", it.getEmail())
                         jsonObject.put("id", it.getId())
                         jsonObject.put("name", it.getFirstName())
+                        jsonObject.put("isFriend", "true")
                         if (it.imagePath != null && it.imagePath != "") {
                             def friendImage = new File('app-data/profile-pics/' + it.imagePath)
                             if (friendImage.exists()) {
@@ -326,6 +327,7 @@ class UserController {
                 jsonObject.put("email", it.getEmail())
                 jsonObject.put("id", it.getId())
                 jsonObject.put("name", it.getFirstName())
+                jsonObject.put("isFriend", "false")
                 if (it.imagePath != null && it.imagePath != "") {
                     def friendImage = new File('app-data/profile-pics/' + it.imagePath)
                     if (friendImage.exists()) {

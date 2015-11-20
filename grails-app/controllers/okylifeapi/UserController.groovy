@@ -317,6 +317,33 @@ class UserController {
         }
     }
 
+    def getUsersByName(String userName) {
+        def users = User.findAllByFirstNameIlike(userName)
+        if (users) {
+            JSONArray jsonArray = new JSONArray();
+            users.each {
+                JSONObject jsonObject = new JSONObject()
+                jsonObject.put("email", it.getEmail())
+                jsonObject.put("id", it.getId())
+                jsonObject.put("name", it.getFirstName())
+                if (it.imagePath != null && it.imagePath != "") {
+                    def friendImage = new File('app-data/profile-pics/' + it.imagePath)
+                    if (friendImage.exists()) {
+                        def encode = new BASE64Encoder().encode(friendImage.bytes)
+                        jsonObject.put("imageBytes", encode)
+                    } else {
+                        jsonObject.put("imageBytes", "")
+                    }
+                }
+                jsonArray.put(jsonObject)
+            }
+            render jsonArray as JSON
+        } else {
+            response.status = 404
+            render "User Not Found"
+        }
+    }
+
     @Transactional
     def save(User userInstance) {
         if (userInstance == null) {

@@ -28,7 +28,7 @@ class VisitPlaceActivityController {
         respond new VisitPlaceActivity(params)
     }
 
-    def getVisitPlaceActivityByEmail(long id) {
+    def getVisitPlaceActivityById(long id) {
         def vpActivity = VisitPlaceActivity.get(id)
         if (!vpActivity) {
             response.status = 404

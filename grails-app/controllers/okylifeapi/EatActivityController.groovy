@@ -197,7 +197,7 @@ class EatActivityController {
         }
     }
 
-    def getEatActivityByEmail(long id) {
+    def getEatActivityById(long id) {
         def eatActivity = EatActivity.get(id)
         if (!eatActivity) {
             response.status = 404

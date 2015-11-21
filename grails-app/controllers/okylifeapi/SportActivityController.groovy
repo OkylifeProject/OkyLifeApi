@@ -28,7 +28,7 @@ class SportActivityController {
         respond new SportActivity(params)
     }
 
-    def getSportActivityByEmail(long id) {
+    def getSportActivityById(long id) {
         def sportActivity = SportActivity.get(id)
         if (!sportActivity) {
             response.status = 404

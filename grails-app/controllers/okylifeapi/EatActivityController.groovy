@@ -197,6 +197,26 @@ class EatActivityController {
         }
     }
 
+    def getEatActivityByEmail(long id) {
+        def eatActivity = EatActivity.get(id)
+        if (!eatActivity) {
+            response.status = 404
+            render "EatActivity Not Found"
+            return
+        }
+        JSONObject jsonEatActivity = new JSONObject()
+        jsonEatActivity.put("type", eatActivity.getType())
+        jsonEatActivity.put("portionSize", eatActivity.getPortionSize())
+        jsonEatActivity.put("totalPortions", eatActivity.getTotalPortions())
+        jsonEatActivity.put("totalFat", eatActivity.getTotalFat())
+        jsonEatActivity.put("totalCarbohydrates", eatActivity.getTotalCarbohydrates())
+        jsonEatActivity.put("totalProteins", eatActivity.getTotalProteins())
+        jsonEatActivity.put("totalCalories", eatActivity.getTotalCalories())
+        jsonEatActivity.put("ingredients", eatActivity.getIngredients())
+
+        render jsonEatActivity as JSON
+    }
+
     def addIngredient(long eatActivityId) {
         def eatActivity = EatActivity.findById(eatActivityId)
         if (eatActivity) {

@@ -28,6 +28,23 @@ class VisitPlaceActivityController {
         respond new VisitPlaceActivity(params)
     }
 
+    def getVisitPlaceActivityByEmail(long id) {
+        def vpActivity = VisitPlaceActivity.get(id)
+        if (!vpActivity) {
+            response.status = 404
+            render "VisitPlaceActivity Not Found"
+            return
+        }
+        JSONObject jsonVpActivity = new JSONObject()
+        jsonVpActivity.put("distance", vpActivity.getDistance())
+        jsonVpActivity.put("address", vpActivity.getAddress())
+        jsonVpActivity.put("type", vpActivity.getType())
+        jsonVpActivity.put("calories", vpActivity.getCalories())
+
+        render jsonVpActivity as JSON
+    }
+
+
     def getVisitPlaceActivitiesByUser(String email) {
         EmailValidator emailValidator = EmailValidator.getInstance()
         if (emailValidator.isValid(email)) {

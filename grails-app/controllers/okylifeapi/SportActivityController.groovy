@@ -28,6 +28,26 @@ class SportActivityController {
         respond new SportActivity(params)
     }
 
+    def getSportActivityByEmail(long id) {
+        def sportActivity = SportActivity.get(id)
+        if (!sportActivity) {
+            response.status = 404
+            render "SportActivity Not Found"
+            return
+        }
+        JSONObject jsonSportActivity = new JSONObject()
+        jsonSportActivity.put("type", sportActivity.getType())
+        jsonSportActivity.put("duration", sportActivity.getDuration())
+        jsonSportActivity.put("distance", sportActivity.getDistance())
+        jsonSportActivity.put("velocity", sportActivity.getVelocity())
+        jsonSportActivity.put("rhythm", sportActivity.getRhythm())
+        jsonSportActivity.put("targetDistance", sportActivity.getTargetDistance())
+        jsonSportActivity.put("hydration", sportActivity.getHydration())
+        jsonSportActivity.put("calories", sportActivity.getCalories())
+
+        render jsonSportActivity as JSON
+    }
+
     def getSportActivitiesByUser(String email) {
         EmailValidator emailValidator = EmailValidator.getInstance()
         if (emailValidator.isValid(email)) {

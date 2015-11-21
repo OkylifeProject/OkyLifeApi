@@ -205,6 +205,11 @@ class EatActivityController {
             return
         }
         JSONObject jsonEatActivity = new JSONObject()
+        jsonEatActivity.put("name", eatActivity.getName())
+        jsonEatActivity.put("description", eatActivity.getDescription())
+        jsonEatActivity.put("creationDate", eatActivity.getCreationDate())
+        jsonEatActivity.put("locations", eatActivity.getLocations())
+
         jsonEatActivity.put("type", eatActivity.getType())
         jsonEatActivity.put("portionSize", eatActivity.getPortionSize())
         jsonEatActivity.put("totalPortions", eatActivity.getTotalPortions())

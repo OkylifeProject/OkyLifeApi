@@ -36,6 +36,11 @@ class SportActivityController {
             return
         }
         JSONObject jsonSportActivity = new JSONObject()
+        jsonSportActivity.put("name", sportActivity.getName())
+        jsonSportActivity.put("description", sportActivity.getDescription())
+        jsonSportActivity.put("creationDate", sportActivity.getCreationDate())
+        jsonSportActivity.put("locations", sportActivity.getLocations())
+
         jsonSportActivity.put("type", sportActivity.getType())
         jsonSportActivity.put("duration", sportActivity.getDuration())
         jsonSportActivity.put("distance", sportActivity.getDistance())

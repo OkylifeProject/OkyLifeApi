@@ -36,6 +36,11 @@ class VisitPlaceActivityController {
             return
         }
         JSONObject jsonVpActivity = new JSONObject()
+        jsonVpActivity.put("name", vpActivity.getName())
+        jsonVpActivity.put("description", vpActivity.getDescription())
+        jsonVpActivity.put("creationDate", vpActivity.getCreationDate())
+        jsonVpActivity.put("locations", vpActivity.getLocations())
+
         jsonVpActivity.put("distance", vpActivity.getDistance())
         jsonVpActivity.put("address", vpActivity.getAddress())
         jsonVpActivity.put("type", vpActivity.getType())

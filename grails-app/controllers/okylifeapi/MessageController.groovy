@@ -134,6 +134,17 @@ class MessageController {
         }
     }
 
+    def deleteMessage(long msnId) {
+        def message = Message.get(msnId)
+        if (!message) {
+            response.status = 404
+            render "Error: Message Not Found"
+            return
+        }
+        message.delete(flush: true)
+        render "Success"
+    }
+
     @Transactional
     def delete(Message messageInstance) {
 

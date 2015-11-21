@@ -109,50 +109,57 @@ class NoteController {
             return
         }
         JSONArray jsonNotes = new JSONArray()
-        Note userNote = userInstance.getNotes().last()
-        if (userNote) {
-            JSONObject jsonNote = new JSONObject()
-            jsonNote.put("ownerEmail", userNote.getOwner().getEmail())
-            jsonNote.put("content", userNote.getContent())
-            jsonNote.put("publicationDate", userNote.getPublicationDate())
 
-            if (userInstance.imagePath != null && userInstance.imagePath != "") {
-                def userImage = new File('app-data/profile-pics/' + userInstance.imagePath)
-                if (userImage.exists()) {
-                    def encode = new BASE64Encoder().encode(userImage.bytes)
-                    jsonNote.put("ownerImageBytes", encode)
-                } else {
-                    jsonNote.put("ownerImageBytes", "")
-                }
-            } else {
-                jsonNote.put("ownerImageBytes", "")
-            }
+        if (!userInstance.getNotes().isEmpty()) {
+            Note userNote = userInstance.getNotes().last()
+            if (userNote) {
+                JSONObject jsonNote = new JSONObject()
+                jsonNote.put("ownerEmail", userNote.getOwner().getEmail())
+                jsonNote.put("content", userNote.getContent())
+                jsonNote.put("publicationDate", userNote.getPublicationDate())
 
-            jsonNotes.put(jsonNote)
-        }
-        def userFriends = userInstance.getFriends()
-        if (userFriends) {
-            userFriends.each {
-                Note friendNote = it.getNotes().last()
-                if (friendNote) {
-                    JSONObject jsonNote = new JSONObject()
-                    jsonNote.put("ownerEmail", friendNote.getOwner().getEmail())
-                    jsonNote.put("content", friendNote.getContent())
-                    jsonNote.put("publicationDate", friendNote.getPublicationDate())
-
-                    if (it.imagePath != null && it.imagePath != "") {
-                        def userImage = new File('app-data/profile-pics/' + it.imagePath)
-                        if (userImage.exists()) {
-                            def encode = new BASE64Encoder().encode(userImage.bytes)
-                            jsonNote.put("ownerImageBytes", encode)
-                        } else {
-                            jsonNote.put("ownerImageBytes", "")
-                        }
+                if (userInstance.imagePath != null && userInstance.imagePath != "") {
+                    def userImage = new File('app-data/profile-pics/' + userInstance.imagePath)
+                    if (userImage.exists()) {
+                        def encode = new BASE64Encoder().encode(userImage.bytes)
+                        jsonNote.put("ownerImageBytes", encode)
                     } else {
                         jsonNote.put("ownerImageBytes", "")
                     }
+                } else {
+                    jsonNote.put("ownerImageBytes", "")
+                }
 
-                    jsonNotes.put(jsonNote)
+                jsonNotes.put(jsonNote)
+            }
+        }
+
+        def userFriends = userInstance.getFriends()
+        if (userFriends) {
+            userFriends.each {
+                if (!it.getNotes().isEmpty()) {
+                    Note friendNote = it.getNotes().last()
+                    if (friendNote) {
+                        JSONObject jsonNote = new JSONObject()
+                        jsonNote.put("ownerEmail", friendNote.getOwner().getEmail())
+                        jsonNote.put("content", friendNote.getContent())
+                        jsonNote.put("publicationDate", friendNote.getPublicationDate())
+
+                        if (it.imagePath != null && it.imagePath != "") {
+                            def userImage = new File('app-data/profile-pics/' + it.imagePath)
+                            if (userImage.exists()) {
+                                def encode = new BASE64Encoder().encode(userImage.bytes)
+                                jsonNote.put("ownerImageBytes", encode)
+                            } else {
+                                jsonNote.put("ownerImageBytes", "")
+                            }
+                        } else {
+                            jsonNote.put("ownerImageBytes", "")
+                        }
+
+                        jsonNotes.put(jsonNote)
+                    }
+
                 }
             }
         }

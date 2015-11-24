@@ -53,7 +53,7 @@ class UserController {
             height = 160
         }
 
-        def userInstance = new User(calories: 0, weight: weight, height: height, registerType: params.registerType, sex: params.sex, firstName: params.firstName, lastName: params.lastName, password: params.password, email: params.email, age: params.age)
+        def userInstance = new User(calories: 1000, weight: weight, height: height, registerType: params.registerType, sex: params.sex, firstName: params.firstName, lastName: params.lastName, password: params.password, email: params.email, age: params.age)
         userInstance.save(flush: true)
         if (!userInstance.hasErrors()) {
             if (params.image) {
